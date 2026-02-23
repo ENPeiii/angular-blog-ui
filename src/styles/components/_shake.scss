@@ -1,0 +1,33 @@
+
+@theme {
+  /* 定義關鍵影格 (Keyframes) */
+  @keyframes bounce-y {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-25%); }
+  }
+
+  /* 將關鍵影格綁定到動畫名稱 */
+  --animate-bounce-y: bounce-y 1s ease-out;
+}
+.shake {
+  @apply transition ease-out duration-300 animate-bounce-y group-hover:-translate-y-2;
+}
+.wait-0 {
+  @apply delay-0;
+}
+
+.wait-1 {
+  @apply delay-75;
+}
+
+.wait-2 {
+  @apply delay-100;
+}
+
+.wait-3 {
+  @apply delay-150;
+}
+
+.wait-4 {
+  @apply delay-200;
+}

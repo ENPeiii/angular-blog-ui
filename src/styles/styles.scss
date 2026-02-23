@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+@use 'tailwindcss';
+@use 'material';
+@use 'colors' as color;
+
+@use 'components/_shake';
+
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+a,
+button {
+  @apply transition ease-in-out font-sans cursor-pointer;
+}
+@theme {
+  @each $key, $value in color.$primary {
+    --color-primary-#{$key}: #{$value};
+  }
+}
