@@ -42,10 +42,10 @@ import { RouterLink } from '@angular/router';
           <button class="text-white hover:text-primary-500">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
-          <a href="#" class="text-white hover:text-primary-500">
+          <a href="https://github.com/ENPeiii" target="_blank" rel="noreferrer noopener" class="text-white hover:text-primary-500">
             <i class="fa-brands fa-github"></i>
           </a>
-          <a href="#" class="text-white hover:text-primary-500">
+          <a href="https://www.linkedin.com/in/enpei" target="_blank" rel="noreferrer noopener" class="text-white hover:text-primary-500">
             <i class="fa-brands fa-linkedin"></i>
           </a>
         </div>
