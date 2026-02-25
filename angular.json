@@ -30,13 +30,25 @@
               }
             ],
             "styles": [
+              "node_modules/@toast-ui/editor/dist/toastui-editor.css",
+              "node_modules/@toast-ui/editor/dist/theme/toastui-editor-dark.css",
+              "node_modules/@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css",
+              "node_modules/@toast-ui/editor-plugin-table-merged-cell/dist/toastui-editor-plugin-table-merged-cell.css",
+              "node_modules/prism-themes/themes/prism-holi-theme.css",
+              "node_modules/prismjs/plugins/toolbar/prism-toolbar.css",
               "src/styles/styles.scss"
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "ssr": {
               "entry": "src/server.ts"
-            }
+            },
+            "allowedCommonJsDependencies": [
+              "@toast-ui/editor",
+              "@toast-ui/editor-plugin-code-syntax-highlight",
+              "@toast-ui/editor-plugin-table-merged-cell",
+              "prismjs"
+            ]
           },
           "configurations": {
             "production": {
