@@ -5,13 +5,33 @@
 
 @use 'components/_shake';
 
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
 a,
 button {
-  @apply transition ease-in-out font-sans cursor-pointer;
+  @apply transition ease-in-out font-[Roboto] cursor-pointer;
 }
 @theme {
   @each $key, $value in color.$primary {
     --color-primary-#{$key}: #{$value};
   }
+
+  @each $key, $value in color.$dark {
+    --color-dark-#{$key}: #{$value};
+  }
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  color-scheme: dark;
+  background-color: var(--color-dark-500);
+  color: var(--color-white);
+  font-weight: 500;
+  height: 100%;
+}
+h1{
+  @apply text-2xl font-bold mb-2;
+}
+h2{
+  @apply text-xl font-bold mb-2;
 }
