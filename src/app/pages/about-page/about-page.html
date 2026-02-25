@@ -1,11 +1,12 @@
 <h1 class="text-2xl">關於我</h1>
 <hr />
 
-<div>
-  <section>
+<div class="grid grid-cols-12 gap-5 mt-5">
+  <section class="col-span-3">
     <img src="images/logo/logo-m.png" alt="logo" class="w-40 h-40 rounded-full mb-4">
+    <p class="text-center w-40">啊培培 ( ENPei )</p>
   </section>
-  <section>
+  <section class="col-span-9">
     <md-viewer [content]="mdViewerContent()" />
   </section>
 </div>

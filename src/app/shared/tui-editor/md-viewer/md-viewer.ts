@@ -18,7 +18,7 @@ export class MdViewer {
       new Viewer({
         el: this.viewerElement.nativeElement,
         initialValue: this.content(),
-        plugins: [[codeSyntaxHighlight, { highlighter: Prism }], tableMergedCell],
+        plugins: [[codeSyntaxHighlight, { highlighter: Prism }], [tableMergedCell]],
         theme: 'dark', // 啟用深色主題
       });
 
