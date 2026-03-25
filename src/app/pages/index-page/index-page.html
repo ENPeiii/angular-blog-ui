@@ -4,10 +4,43 @@
     <md-viewer [content]="mdViewerContent()" />
   </div>
   <div class="col-span-12 md:col-span-3">
-    <img src="images/logo/logo-m.png" alt="logo" class="w-40 h-40 rounded-full mb-4 mx-auto " />
+    <img src="images/logo/logo-m.png" alt="logo" class="w-40 h-40 rounded-full mb-4 mx-auto" />
   </div>
 </section>
 <!-- 文章列表 -->
 <section>
-
+  <ul>
+    @for (article of articleList(); track $index) {
+      <li class="border-b border-dark-50 py-2 md:py-5 md:flex item-start gap-10">
+        <div class="text-dark-50 break-keep mb-2 md:mb-0">
+          {{ article.date | date: 'yyyy年M月d日' }}
+        </div>
+        <div class="grid grid-cols-1 gap-1 md:gap-2">
+          <h2>{{ article.title }}</h2>
+          <nav class="flex item-center gap-5">
+            @for (tag of article.tags; track $index) {
+              <a [href]="`tags/${tag.id}`" class="tag">{{ tag.name }}</a>
+            }
+          </nav>
+          <p class="text-dark-50 text-justify line-clamp-2">
+            {{ article.summary }}
+          </p>
+          <nav>
+            <a [href]="article.postUrl" class="link">more</a>
+          </nav>
+        </div>
+      </li>
+    } @empty {
+      <li>目前沒有文章...</li>
+    }
+  </ul>
+  <nav class="text-right mt-5">
+    <a [routerLink]="[ROUTES_CONSTANT['POSTS'].url]" class="link group"
+      >See more posts
+      <span
+        ><i
+          class="fa-solid fa-arrow-right group-hover:translate-x-1 transition ease-in-out"
+        ></i></span
+    ></a>
+  </nav>
 </section>

@@ -18,7 +18,7 @@ import { Footer } from './footer/footer';
     </section>
 
     @if (shouldShowScrollButton()) {
-    <div class="fixed bottom-20 z-50 w-full flex justify-center pointer-events-none">
+    <div class="fixed bottom-40 z-50 w-full flex justify-center pointer-events-none">
       <div class="w-full max-w-[1024px] px-4 md:px-8 flex justify-end">
         <button
           (click)="scrollToTop()"

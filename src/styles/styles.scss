@@ -5,10 +5,11 @@
 
 @use 'components/_shake';
 @use 'components/_toastui-editor';
+@use 'components/_link';
 
 a,
 button {
-  @apply transition ease-in-out font-[Roboto] cursor-pointer;
+  @apply transition ease-in-out cursor-pointer;
 }
 @theme {
   @each $key, $value in color.$primary {
@@ -29,8 +30,11 @@ body {
   height: 100%;
 }
 h1{
-  @apply text-2xl font-bold mb-2;
+  @apply text-xl md:text-2xl font-bold mb-2 tracking-wider;
 }
 h2{
-  @apply text-xl font-bold mb-2;
+  @apply text-lg md:text-xl font-bold tracking-wider ;
+}
+p{
+  @apply text-sm md:text-base tracking-wider;
 }
