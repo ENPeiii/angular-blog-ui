@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 
 export interface IndexArticle{
@@ -18,11 +19,11 @@ export class Index {
   constructor(private http: HttpClient) {}
 
 
-  getBannerContent() {
+  getBannerContent():Observable<{ content: string }> {
     return this.http.get<{ content: string }>('api/banner.json');
   }
 
-  getArticleList() {
+  getArticleList(): Observable<{ articles: IndexArticle[] }> {
     return this.http.get<{ articles: IndexArticle[] }>('api/index.json');
   }
 }

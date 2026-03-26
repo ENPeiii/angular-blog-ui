@@ -1,0 +1,17 @@
+button {
+  font-size: 1rem; /* text-base */
+  color: var(--color-dark-50);
+  font-weight: 400;
+  transition:
+    font-size 300ms ease-in-out,
+    color 300ms ease-in-out,
+    font-weight 300ms ease-in-out;
+  &:hover {
+    color: var(--color-dark-100);
+  }
+  &.tabActive {
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: 600;
+    color: var(--color-white);
+  }
+}

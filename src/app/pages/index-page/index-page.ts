@@ -17,7 +17,7 @@ export class IndexPage implements OnInit {
 
   ROUTES_CONSTANT = ROUTES_CONSTANT;
 
-  constructor(private indexService: Index) {}
+  constructor(private service: Index) {}
 
   ngOnInit(): void {
     this.loadBannerContent();
@@ -25,7 +25,7 @@ export class IndexPage implements OnInit {
   }
 
   private loadBannerContent(): void {
-    this.indexService.getBannerContent().subscribe({
+    this.service.getBannerContent().subscribe({
       next: (data) => {
         this.mdViewerContent.set(data.content);
       },
@@ -38,7 +38,7 @@ export class IndexPage implements OnInit {
   }
 
   private loadArticleList(): void {
-    this.indexService.getArticleList().subscribe({
+    this.service.getArticleList().subscribe({
       next: (data) => {
         this.articleList.set(data.articles);
       },

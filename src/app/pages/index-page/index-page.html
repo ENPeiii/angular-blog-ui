@@ -19,14 +19,14 @@
           <h2>{{ article.title }}</h2>
           <nav class="flex item-center gap-5">
             @for (tag of article.tags; track $index) {
-              <a [href]="`tags/${tag.id}`" class="tag">{{ tag.name }}</a>
+              <a [routerLink]="[`/tags/${tag.id}`]" class="tag">{{ tag.name }}</a>
             }
           </nav>
           <p class="text-dark-50 text-justify line-clamp-2">
             {{ article.summary }}
           </p>
           <nav>
-            <a [href]="article.postUrl" class="link">more</a>
+            <a [routerLink]="article.postUrl" class="link">more</a>
           </nav>
         </div>
       </li>
