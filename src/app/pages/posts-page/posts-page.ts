@@ -20,10 +20,10 @@ export class PostsPage implements OnInit {
   postsResource = rxResource({
     params: () => ({ tab: this.selectedTab() }),
     stream: ({ params }) =>
-      this.service.getPostsList(params.tab).pipe(map((res) => res.articles)),
+      this.service.getPostsList(params.tab).pipe(map((res) => res)),
   });
 
-  articles = this.postsResource.value;
+  postsRes = this.postsResource.value()?.data;
 
   constructor(private service: Posts) {}
 
@@ -41,5 +41,9 @@ export class PostsPage implements OnInit {
         this.tabs.set([]);
       },
     });
+  }
+
+  changePage(pageNumber: number): void {
+
   }
 }

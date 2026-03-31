@@ -9,34 +9,42 @@
     </button>
   }
 </div>
-<hr />
+<hr class="border-dark-50" />
 
 <!-- 文章列表 -->
 <section>
   <ul>
-    @for (article of articles(); track $index) {
-      <li>
-        <h2 class="text-dark-50">{{ article.month | date: 'yyyy年M月' }}</h2>
+    @for (article of postsRes?.articles; track $index) {
+      <li class="border-b border-dark-50 py-5">
+        <h2>{{ article.month | date: 'yyyy 年 M 月' }}</h2>
         <ul class="grid grid-cols-1 gap-2">
-          @for(post of article.posts; track $index){
-          <li>
-            <p class="text-dark-50">{{ post.date }}</p>
-            <div>
-              <h3>{{ post.title }}</h3>
-              <nav class="flex item-center gap-5">
-                @for (tag of post.tags; track $index) {
-                  <a [routerLink]="[`/tags/${tag.id}`]" class="tag">{{ tag.name }}</a>
+          @for (post of article.posts; track $index) {
+            <li class="md:flex item-start gap-10 mt-2">
+              <p class="text-dark-50">{{ post.date }}</p>
+              <div>
+                <h3>
+                  <a [routerLink]="[`/${post.postUrl}`]" class="hover:text-primary-500">{{
+                    post.title
+                  }}</a>
+                </h3>
+                @if (post.topic) {
+                  <span class="text-sm text-primary-300">{{ post.topic }}</span>
                 }
-              </nav>
-            </div>
-          </li>
-        }
+              </div>
+            </li>
+          }
         </ul>
-
-
       </li>
     } @empty {
       <li>目前沒有文章...</li>
     }
   </ul>
+  <div class="flex justify-end gap-4 mt-5">
+    <button (click)="changePage(-1)" class="group">
+      <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition ease-in mr-2"></i
+      >Previous</button
+    ><button (click)="changePage(1)" class="group">
+      Next<i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition ease-in ml-2"></i>
+    </button>
+  </div>
 </section>

@@ -5,6 +5,10 @@ export interface PostsTab {
   name: string;
   value: string;
 }
+export interface PostsRes {
+  page: number;
+  articles: PostsList[];
+}
 
 export interface PostsList {
   month: string;
@@ -12,7 +16,7 @@ export interface PostsList {
     id: number;
     title: string;
     date: string;
-    tags: { name: string; id: string }[];
+    topic: string;
     summary: string;
     postUrl: string;
   }[];
@@ -29,7 +33,6 @@ export class Posts {
   }
 
   getPostsList(tab:string) {
-    console.log(tab);
-    return this.http.get<{ articles: PostsList[] }>('/api/posts.json');
+    return this.http.get<{ data: PostsRes }>('/api/posts.json');
   }
 }
