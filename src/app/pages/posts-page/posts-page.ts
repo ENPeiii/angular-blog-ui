@@ -1,7 +1,6 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { Posts, PostsList, PostsTab } from './services/posts';
-import { map } from 'rxjs';
+import { Posts, PostsRes, PostsTab } from './services/posts';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -15,15 +14,15 @@ export class PostsPage implements OnInit {
 
   tabs = signal<PostsTab[]>([]);
   selectedTab = signal<string>('all');
+  page = signal<number>(1);
 
   // rxResource: 當 selectedTab 變化時，自動呼叫 API 取得文章列表
-  postsResource = rxResource({
-    params: () => ({ tab: this.selectedTab() }),
-    stream: ({ params }) =>
-      this.service.getPostsList(params.tab).pipe(map((res) => res)),
+  postsResource = rxResource<PostsRes, { tab: string; page: number }>({
+    params: () => ({ tab: this.selectedTab(), page: this.page() }),
+    stream: ({ params }) => this.service.getPostsList(params.tab, params.page),
   });
 
-  postsRes = this.postsResource.value()?.data;
+  postsRes = computed(() => this.postsResource.value());
 
   constructor(private service: Posts) {}
 
@@ -33,8 +32,8 @@ export class PostsPage implements OnInit {
 
   private loadPostsTab(): void {
     this.service.getPostsTab().subscribe({
-      next: (data) => {
-        this.tabs.set(data.data);
+      next: (res) => {
+        this.tabs.set(res);
       },
       error: (error) => {
         console.error('載入文章分類失敗:', error);
@@ -44,6 +43,11 @@ export class PostsPage implements OnInit {
   }
 
   changePage(pageNumber: number): void {
+    this.page.set(this.page() + pageNumber);
+  }
 
+  changeTab(tab: string): void {
+    this.selectedTab.set(tab);
+    this.page.set(1);
   }
 }

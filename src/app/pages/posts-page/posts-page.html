@@ -3,7 +3,7 @@
     <button
       type="button"
       [class.tabActive]="tab.value === selectedTab()"
-      (click)="selectedTab.set(tab.value)"
+      (click)="changeTab(tab.value)"
     >
       {{ tab.name }}
     </button>
@@ -14,7 +14,7 @@
 <!-- 文章列表 -->
 <section>
   <ul>
-    @for (article of postsRes?.articles; track $index) {
+    @for (article of postsRes()?.articles ?? []; track $index) {
       <li class="border-b border-dark-50 py-5">
         <h2>{{ article.month | date: 'yyyy 年 M 月' }}</h2>
         <ul class="grid grid-cols-1 gap-2">
@@ -40,11 +40,18 @@
     }
   </ul>
   <div class="flex justify-end gap-4 mt-5">
-    <button (click)="changePage(-1)" class="group">
-      <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition ease-in mr-2"></i
-      >Previous</button
-    ><button (click)="changePage(1)" class="group">
-      Next<i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition ease-in ml-2"></i>
-    </button>
+    @if (postsRes()?.hasPrevious) {
+      <button (click)="changePage(-1)" class="group">
+        <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition ease-in mr-2"></i
+        >Previous
+      </button>
+    }
+    @if (postsRes()?.hasNext) {
+      <button (click)="changePage(1)" class="group">
+        Next<i
+          class="fa-solid fa-arrow-right group-hover:translate-x-1 transition ease-in ml-2"
+        ></i>
+      </button>
+    }
   </div>
 </section>
