@@ -25,17 +25,31 @@ export const routes: Routes = [
         title: ROUTES_CONSTANT['BLOG'].title,
         loadComponent: () => import('./pages/posts-page/blog/blog').then((m) => m.Blog),
       },
-      /** 主題列表 */
+      /** 主題相關路由（巢狀） */
       {
-        path: ROUTES_CONSTANT['TOPIC'].url,
-        title: ROUTES_CONSTANT['TOPIC'].title,
-        loadComponent: () => import('./pages/topic-page/topic-page').then((m) => m.TopicPage),
-      },
-      /** 單一主題（動態路由） */
-      {
-        path: ROUTES_CONSTANT['TOPIC_DETAIL'].url,
-        title: ROUTES_CONSTANT['TOPIC_DETAIL'].title,
-        loadComponent: () => import('./pages/topic-page/topic/topic').then((m) => m.Topic),
+        path: 'topic',
+        children: [
+          {
+            path: '',
+            title: ROUTES_CONSTANT['TOPIC'].title,
+            loadComponent: () => import('./pages/topic-page/topic-page').then((m) => m.TopicPage),
+          },
+          {
+            path: ':topicId',
+            children: [
+              {
+                path: '',
+                title: ROUTES_CONSTANT['TOPIC_HOME'].title,
+                loadComponent: () => import('./pages/topic-page/topic/topic').then((m) => m.Topic),
+              },
+              {
+                path: ':articleId',
+                title: ROUTES_CONSTANT['TOPIC_ARTICLE'].title,
+                loadComponent: () => import('./pages/topic-page/topic-article/topic-article').then((m) => m.TopicArticle),
+              },
+            ],
+          },
+        ],
       },
       /** 標籤列表 */
       {

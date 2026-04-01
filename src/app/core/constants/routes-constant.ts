@@ -24,12 +24,18 @@ export const ROUTES_CONSTANT: { [key: string]: IRoute | IDynamicRoute } = {
   } as IDynamicRoute,
   /**主題列表 */
   TOPIC: { base: 'topic', url: 'topic', title: `主題列表 - ${APP_TITLE}` },
-  /**單一主題 */
-  TOPIC_DETAIL: {
+  /**單一主題首頁 */
+  TOPIC_HOME: {
     base: 'topic',
     url: 'topic/:topicId',
     title: `主題 - ${APP_TITLE}`,
     paramName: 'topicId',
+  } as IDynamicRoute,
+  TOPIC_ARTICLE: {
+    base: 'topic',
+    url: 'topic/:topicId/:articleId',
+    title: `文章 - ${APP_TITLE}`,
+    paramName: 'articleId',
   } as IDynamicRoute,
   /**標籤列表 */
   TAGS: { base: 'tags', url: 'tags', title: `標籤列表 - ${APP_TITLE}` },
