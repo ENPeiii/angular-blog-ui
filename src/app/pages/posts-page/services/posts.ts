@@ -22,7 +22,7 @@ export interface PostsList {
     id: number;
     title: string;
     date: string;
-    topic: string;
+    topics: string;
     summary: string;
     postUrl: string;
   }[];
@@ -33,11 +33,8 @@ export interface PostsList {
 export class Posts {
   constructor(private http: HttpClient) {}
 
-
   getPostsTab(): Observable<PostsTab[]> {
-    return this.http.get<{ data: PostsTab[] }>('/api/postsTab.json').pipe(
-      map((res) => res.data)
-    );
+    return this.http.get<{ data: PostsTab[] }>('/api/postsTab.json').pipe(map((res) => res.data));
   }
 
   getPostsList(tab: string, page: number): Observable<PostsRes> {

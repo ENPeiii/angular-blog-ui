@@ -86,8 +86,8 @@ import { MatMenuModule } from '@angular/material/menu';
           <li>
             <a
               class="hover:text-primary-500 px-5 py-3 md:p-0"
-              [routerLink]="[ROUTES_CONSTANT['TOPIC'].url]"
-              >Topic</a
+              [routerLink]="[ROUTES_CONSTANT['TOPICS'].url]"
+              >Topics</a
             >
           </li>
           <li>

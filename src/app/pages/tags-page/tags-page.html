@@ -1,1 +1,14 @@
-<p>tags-page works!</p>
+<h1>標籤</h1>
+<hr class="border-dark-50" />
+
+<section class="py-4">
+  <nav class="flex flex-wrap gap-5">
+    @for(tag of tagsList(); track $index) {
+      <a
+        [routerLink]="['/tags', tag.tagId]"
+        class="hover:text-primary-500"
+        >{{ tag.name }} <span class="text-[10px] text-dark-50">{{ tag.amount }}</span></a
+      >
+    }
+  </nav>
+</section>

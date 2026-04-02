@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TopicPage } from './topic-page';
+import { TagContent } from './tag-content';
 
-describe('TopicPage', () => {
-  let component: TopicPage;
-  let fixture: ComponentFixture<TopicPage>;
+describe('TagContent', () => {
+  let component: TagContent;
+  let fixture: ComponentFixture<TagContent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TopicPage]
+      imports: [TagContent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TopicPage);
+    fixture = TestBed.createComponent(TagContent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

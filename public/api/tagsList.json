@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "tagId": "uuid-1",
+      "name": "Angular",
+      "amount": 10
+    },
+    {
+      "tagId": "uuid-2",
+      "name": "TypeScript",
+      "amount": 5
+    },
+    {
+      "tagId": "uuid-3",
+      "name": "RxJS",
+      "amount": 8
+    }
+  ]
+}

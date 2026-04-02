@@ -27,41 +27,59 @@ export const routes: Routes = [
       },
       /** 主題相關路由（巢狀） */
       {
-        path: 'topic',
+        path: ROUTES_CONSTANT['TOPICS'].url,
         children: [
+          /** /topics - 主題列表 */
           {
             path: '',
-            title: ROUTES_CONSTANT['TOPIC'].title,
-            loadComponent: () => import('./pages/topic-page/topic-page').then((m) => m.TopicPage),
+            title: ROUTES_CONSTANT['TOPICS'].title,
+            loadComponent: () =>
+              import('./pages/topics-page/topics-page').then((m) => m.TopicsPage),
           },
           {
-            path: ':topicId',
+            path: ROUTES_CONSTANT['TOPICS'].children?.TOPICS_CONTENT?.url,
             children: [
+              /** /topics/:topicsId - 主題首頁 */
               {
                 path: '',
-                title: ROUTES_CONSTANT['TOPIC_HOME'].title,
-                loadComponent: () => import('./pages/topic-page/topic/topic').then((m) => m.Topic),
+                title: '這裡到時候要動態生成',
+                loadComponent: () =>
+                  import('./pages/topics-page/topic-content/topic-content').then(
+                    (m) => m.TopicContent,
+                  ),
               },
+              /** /topics/:topicsId/:articleId - 主題下的文章 */
               {
-                path: ':articleId',
-                title: ROUTES_CONSTANT['TOPIC_ARTICLE'].title,
-                loadComponent: () => import('./pages/topic-page/topic-article/topic-article').then((m) => m.TopicArticle),
+                path: ROUTES_CONSTANT['TOPICS'].children?.TOPICS_CONTENT?.children?.TOPICS_ARTICLE
+                  ?.url,
+                title: '內文也是動態生成',
+                loadComponent: () =>
+                  import('./pages/topics-page/topic-content/topic-content').then(
+                    (m) => m.TopicContent,
+                  ),
               },
             ],
           },
         ],
       },
-      /** 標籤列表 */
+      /** 標籤相關路由（巢狀） */
       {
         path: ROUTES_CONSTANT['TAGS'].url,
-        title: ROUTES_CONSTANT['TAGS'].title,
-        loadComponent: () => import('./pages/tags-page/tags-page').then((m) => m.TagsPage),
-      },
-      /** 單一標籤（動態路由） */
-      {
-        path: ROUTES_CONSTANT['TAG_DETAIL'].url,
-        title: ROUTES_CONSTANT['TAG_DETAIL'].title,
-        loadComponent: () => import('./pages/tags-page/tag/tag').then((m) => m.Tag),
+        children: [
+          /** /tags - 標籤列表 */
+          {
+            path: '',
+            title: ROUTES_CONSTANT['TAGS'].title,
+            loadComponent: () => import('./pages/tags-page/tags-page').then((m) => m.TagsPage),
+          },
+          /** /tags/:tagId - 單一標籤（動態路由） */
+          {
+            path: ROUTES_CONSTANT['TAGS'].children?.['TAG_CONTENT']?.url,
+            title: '動態生成',
+            loadComponent: () =>
+              import('./pages/tags-page/tag-content/tag-content').then((m) => m.TagContent),
+          },
+        ],
       },
       /** 關於我 */
       {
