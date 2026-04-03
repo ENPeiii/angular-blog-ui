@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Topics, TopicsList } from './services/topics';
 import { RouterLink } from '@angular/router';
 
@@ -9,22 +10,24 @@ import { RouterLink } from '@angular/router';
   styleUrl: './topics-page.scss',
   providers: [Topics],
 })
-export class TopicsPage {
-  constructor(private service: Topics) {}
+export class TopicsPage implements OnInit {
   topicsList = signal<TopicsList[]>([]);
+
+  private destroyRef = inject(DestroyRef);
+
+  constructor(private service: Topics) {}
 
   ngOnInit(): void {
     this.loadTopicList();
   }
 
   private loadTopicList(): void {
-    this.service.getTopicsList().subscribe({
+    this.service.getTopicsList().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (data) => {
         this.topicsList.set(data);
       },
       error: (error) => {
         console.error('載入主題列表失敗:', error);
-        // 若加載失敗，設置預設內容
         this.topicsList.set([]);
       },
     });

@@ -1,4 +1,5 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MdViewer } from '../../shared/tui-editor/md-viewer/md-viewer';
 import { About } from './services/about';
 
@@ -11,6 +12,8 @@ import { About } from './services/about';
 export class AboutPage implements OnInit {
   mdViewerContent = signal<string>('');
 
+  private destroyRef = inject(DestroyRef);
+
   constructor(private aboutService: About) {}
 
   ngOnInit(): void {
@@ -18,13 +21,12 @@ export class AboutPage implements OnInit {
   }
 
   private loadAboutContent(): void {
-    this.aboutService.getAboutContent().subscribe({
+    this.aboutService.getAboutContent().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (data) => {
         this.mdViewerContent.set(data.content);
       },
       error: (error) => {
         console.error('載入關於我內容失敗:', error);
-        // 若加載失敗，設置預設內容
         this.mdViewerContent.set('# 關於我\n加載內容失敗，請稍後重試。');
       },
     });

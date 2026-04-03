@@ -1,8 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Tags, TagsList } from './services/tags';
 import { RouterLink } from '@angular/router';
-
-
 
 @Component({
   selector: 'app-tags-page',
@@ -11,8 +10,10 @@ import { RouterLink } from '@angular/router';
   styleUrl: './tags-page.css',
   providers: [Tags],
 })
-export class TagsPage {
+export class TagsPage implements OnInit {
   tagsList = signal<TagsList[]>([]);
+
+  private destroyRef = inject(DestroyRef);
 
   constructor(private service: Tags) {}
 
@@ -21,13 +22,12 @@ export class TagsPage {
   }
 
   private loadTagList(): void {
-    this.service.getTagsList().subscribe({
+    this.service.getTagsList().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (data) => {
         this.tagsList.set(data);
       },
       error: (error) => {
         console.error('載入標籤列表失敗:', error);
-        // 若加載失敗，設置預設內容
         this.tagsList.set([]);
       },
     });

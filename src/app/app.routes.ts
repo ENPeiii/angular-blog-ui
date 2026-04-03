@@ -23,7 +23,7 @@ export const routes: Routes = [
       {
         path: ROUTES_CONSTANT['BLOG'].url,
         title: ROUTES_CONSTANT['BLOG'].title,
-        loadComponent: () => import('./pages/posts-page/blog/blog').then((m) => m.Blog),
+        loadComponent: () => import('./pages/posts-page/blog-content/blog-content').then((m) => m.BlogContent),
       },
       /** 主題相關路由（巢狀） */
       {

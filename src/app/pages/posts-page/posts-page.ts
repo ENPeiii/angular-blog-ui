@@ -1,5 +1,5 @@
-import { Component, OnInit, computed, signal } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
+import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Posts, PostsRes, PostsTab } from './services/posts';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -24,6 +24,8 @@ export class PostsPage implements OnInit {
 
   postsRes = computed(() => this.postsResource.value());
 
+  private destroyRef = inject(DestroyRef);
+
   constructor(private service: Posts) {}
 
   ngOnInit(): void {
@@ -31,7 +33,7 @@ export class PostsPage implements OnInit {
   }
 
   private loadPostsTab(): void {
-    this.service.getPostsTab().subscribe({
+    this.service.getPostsTab().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
         this.tabs.set(res);
       },
