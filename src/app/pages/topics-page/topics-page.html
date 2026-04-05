@@ -3,10 +3,10 @@
 
 <section class="py-5">
   <nav class="grid grid-cols-3 gap-5 text-center">
-    @for (topics of topicsList(); track $index) {
+    @for (topics of topicsList(); track topics.topicsId) {
       <a
         [routerLink]="['/topics', topics.topicsId]"
-        class="border border-dark-50 px-2 py-5 rounded-xl"
+        class="border border-dark-50 px-2 py-5 text-base md:text-lg rounded-xl topics-card"
         >{{ topics.name }}</a
       >
     }

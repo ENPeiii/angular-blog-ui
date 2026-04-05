@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { Layout } from './layouts/layout';
 import { ROUTES_CONSTANT } from './core/constants/routes-constant';
+import { APP_TITLE } from './core/constants/base-constant';
 
 export const routes: Routes = [
   {
@@ -22,7 +24,7 @@ export const routes: Routes = [
       /** 單篇文章（動態路由） */
       {
         path: ROUTES_CONSTANT['BLOG'].url,
-        title: ROUTES_CONSTANT['BLOG'].title,
+        title: (route: ActivatedRouteSnapshot) => `${route.paramMap.get('blogId')} - ${APP_TITLE}`,
         loadComponent: () => import('./pages/posts-page/blog-content/blog-content').then((m) => m.BlogContent),
       },
       /** 主題相關路由（巢狀） */
@@ -42,7 +44,8 @@ export const routes: Routes = [
               /** /topics/:topicsId - 主題首頁 */
               {
                 path: '',
-                title: '這裡到時候要動態生成',
+                title: (route: ActivatedRouteSnapshot) =>
+                  `${route.paramMap.get('topicsId')} - ${APP_TITLE}`,
                 loadComponent: () =>
                   import('./pages/topics-page/topic-content/topic-content').then(
                     (m) => m.TopicContent,
@@ -52,7 +55,8 @@ export const routes: Routes = [
               {
                 path: ROUTES_CONSTANT['TOPICS'].children?.TOPICS_CONTENT?.children?.TOPICS_ARTICLE
                   ?.url,
-                title: '內文也是動態生成',
+                title: (route: ActivatedRouteSnapshot) =>
+                  `${route.paramMap.get('articleId')} - ${APP_TITLE}`,
                 loadComponent: () =>
                   import('./pages/topics-page/topic-content/topic-content').then(
                     (m) => m.TopicContent,
@@ -75,7 +79,8 @@ export const routes: Routes = [
           /** /tags/:tagId - 單一標籤（動態路由） */
           {
             path: ROUTES_CONSTANT['TAGS'].children?.['TAG_CONTENT']?.url,
-            title: '動態生成',
+            title: (route: ActivatedRouteSnapshot) =>
+              `#${route.paramMap.get('tagId')} - ${APP_TITLE}`,
             loadComponent: () =>
               import('./pages/tags-page/tag-content/tag-content').then((m) => m.TagContent),
           },

@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, output, Renderer2, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { APP_TITLE } from '../../core/constants/base-constant';
 import { RouterLink } from '@angular/router';
@@ -21,7 +21,7 @@ import { MatMenuModule } from '@angular/material/menu';
             alt="logo"
           />
           <!-- 動態字母 -->
-          @for (word of title().split(' '); track $index) {
+          @for (word of title().split(' '); track word) {
             <span
               class="shake px-0.5 font-bold hidden sm:inline"
               [class]="'wait-' + ($index + 1)"
@@ -109,6 +109,7 @@ import { MatMenuModule } from '@angular/material/menu';
     </ng-template>
   `,
   styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
   headerEl = viewChild.required<ElementRef>('header');

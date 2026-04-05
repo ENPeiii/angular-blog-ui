@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { APP_TITLE } from '../../core/constants/base-constant';
 
 @Component({
@@ -28,6 +28,7 @@ import { APP_TITLE } from '../../core/constants/base-constant';
     </footer>
   `,
   styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Footer {
   year = signal(new Date().getFullYear());

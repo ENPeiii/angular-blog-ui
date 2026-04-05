@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MdViewer } from '../../shared/tui-editor/md-viewer/md-viewer';
 import { Index, IndexArticle } from './services';
@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
   imports: [MdViewer, DatePipe,RouterLink],
   templateUrl: './index-page.html',
   styleUrl: './index-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IndexPage implements OnInit {
   mdViewerContent = signal<string>('');

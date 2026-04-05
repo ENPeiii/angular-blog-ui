@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Topics, TopicsList } from './services/topics';
 import { RouterLink } from '@angular/router';
@@ -8,7 +8,7 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   templateUrl: './topics-page.html',
   styleUrl: './topics-page.scss',
-  providers: [Topics],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopicsPage implements OnInit {
   topicsList = signal<TopicsList[]>([]);

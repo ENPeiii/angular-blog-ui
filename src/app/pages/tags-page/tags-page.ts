@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Tags, TagsList } from './services/tags';
 import { RouterLink } from '@angular/router';
@@ -7,8 +7,8 @@ import { RouterLink } from '@angular/router';
   selector: 'app-tags-page',
   imports: [RouterLink],
   templateUrl: './tags-page.html',
-  styleUrl: './tags-page.css',
-  providers: [Tags],
+  styleUrl: './tags-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagsPage implements OnInit {
   tagsList = signal<TagsList[]>([]);

@@ -1,9 +1,10 @@
-import { Component, HostListener, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, PLATFORM_ID, computed, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
-import { PLATFORM_ID, inject } from '@angular/core';
 import { Header } from './header/header';
 import { Footer } from './footer/footer';
+import { fromEvent, Subscription } from 'rxjs';
+import { throttleTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-layout',
@@ -42,28 +43,32 @@ import { Footer } from './footer/footer';
       min-height: 100vh;
     }
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Layout {
-  platformId = inject(PLATFORM_ID);
-  isBrowser = isPlatformBrowser(this.platformId);
+export class Layout implements OnInit, OnDestroy {
+  private platformId = inject(PLATFORM_ID);
+  private isBrowser = isPlatformBrowser(this.platformId);
+  private scrollSub?: Subscription;
 
   headerHeight = signal<number>(0);
   scrollHeight = signal<number>(0);
+  shouldShowScrollButton = computed(() => this.scrollHeight() > this.headerHeight() * 2);
 
   setHeaderHeight(e: number): void {
     this.headerHeight.set(e);
   }
 
-  @HostListener('window:scroll', [])
-  onWindowScroll(): void {
+  ngOnInit(): void {
     if (this.isBrowser) {
-      this.scrollHeight.set(window.scrollY);
+      this.scrollSub = fromEvent(window, 'scroll')
+        .pipe(throttleTime(100, undefined, { leading: true, trailing: true }))
+        .subscribe(() => this.scrollHeight.set(window.scrollY));
     }
   }
 
-  shouldShowScrollButton = (): boolean => {
-    return this.scrollHeight() > this.headerHeight()*2;
-  };
+  ngOnDestroy(): void {
+    this.scrollSub?.unsubscribe();
+  }
 
   scrollToTop(): void {
     if (this.isBrowser) {

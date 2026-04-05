@@ -1,44 +1,60 @@
-import { afterNextRender, Component, ElementRef, effect, input, ViewChild, Injector, inject, runInInjectionContext } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, ElementRef, effect, input, OnDestroy, ViewChild, Injector, inject, runInInjectionContext } from '@angular/core';
 import { loadTuiViewer } from '../tui-editor.loader';
 
 @Component({
   selector: 'md-viewer',
   imports: [],
   template: `<div #viewerElement></div>`,
-  styles: [],
+  styles: [`
+    :host-context(app-index-page) .toastui-editor-contents h1,
+    :host-context(app-index-page) .toastui-editor-contents h2 {
+      border: none !important;
+      border-bottom: none !important;
+      padding-bottom: 0 !important;
+    }
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MdViewer {
+export class MdViewer implements OnDestroy {
   @ViewChild('viewerElement') viewerElement!: ElementRef;
   content = input<string>('');
   private injector = inject(Injector);
+  private viewerInstance: { destroy(): void } | null = null;
 
   constructor() {
     afterNextRender(async () => {
-      // 動態載入 Viewer
       const { Viewer, codeSyntaxHighlight, tableMergedCell, Prism } = await loadTuiViewer();
 
-      // 在注入上下文中使用 effect 監聽內容變化
       runInInjectionContext(this.injector, () => {
         effect(() => {
           const contentValue = this.content();
-
-          // 清空容器，重新初始化 Viewer
           const container = this.viewerElement.nativeElement;
+
+          // 銷毀舊實例，防止記憶體洩漏
+          if (this.viewerInstance) {
+            this.viewerInstance.destroy();
+            this.viewerInstance = null;
+          }
+
           container.innerHTML = '';
 
-          new Viewer({
+          this.viewerInstance = new Viewer({
             el: container,
             initialValue: contentValue,
             plugins: [[codeSyntaxHighlight, { highlighter: Prism }], [tableMergedCell]],
-            theme: 'dark', // 啟用深色主題
+            theme: 'dark',
           });
 
-          // 重新執行 Prism 高亮，讓 toolbar 和 copy-to-clipboard 插件生效
           setTimeout(() => {
             Prism.highlightAll();
           }, 100);
         });
       });
     });
+  }
+
+  ngOnDestroy(): void {
+    this.viewerInstance?.destroy();
+    this.viewerInstance = null;
   }
 }

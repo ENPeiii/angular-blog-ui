@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-search',
   imports: [],
   templateUrl: './search.html',
-  styleUrl: './search.css',
+  styleUrl: './search.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Search {
 

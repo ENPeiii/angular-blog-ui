@@ -1,9 +1,0 @@
-/* 在 index 頁面移除 md-viewer 內的 h1 和 h2 邊框 */
-:host ::ng-deep {
-  md-viewer .toastui-editor-contents h1,
-  md-viewer .toastui-editor-contents h2 {
-    border: none !important;
-    border-bottom: none !important;
-    padding-bottom: 0 !important;
-  }
-}

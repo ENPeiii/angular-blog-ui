@@ -1,5 +1,5 @@
 <div class="flex items-end gap-4">
-  @for (tab of tabs(); track $index) {
+  @for (tab of tabs(); track tab.value) {
     <button
       type="button"
       [class.tabActive]="tab.value === selectedTab()"
@@ -14,11 +14,11 @@
 <!-- 文章列表 -->
 <section>
   <ul>
-    @for (article of postsRes()?.articles ?? []; track $index) {
+    @for (article of postsRes()?.articles ?? []; track article.month) {
       <li class="border-b border-dark-50 py-5">
         <h2>{{ article.month | date: 'yyyy 年 M 月' }}</h2>
         <ul class="grid grid-cols-1 gap-2">
-          @for (post of article.posts; track $index) {
+          @for (post of article.posts; track post.id) {
             <li class="md:flex item-start gap-10 mt-2">
               <p class="text-dark-50">{{ post.date }}</p>
               <div>

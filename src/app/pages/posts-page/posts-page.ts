@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Posts, PostsRes, PostsTab } from './services/posts';
 import { DatePipe } from '@angular/common';
@@ -9,6 +9,7 @@ import { RouterLink } from '@angular/router';
   imports: [DatePipe,RouterLink],
   templateUrl: './posts-page.html',
   styleUrl: './posts-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostsPage implements OnInit {
 

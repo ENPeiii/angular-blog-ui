@@ -1,17 +1,17 @@
 {
   "data": [
     {
-      "tagId": "uuid-1",
+      "tagId": "angular",
       "name": "Angular",
       "amount": 10
     },
     {
-      "tagId": "uuid-2",
+      "tagId": "typeScript",
       "name": "TypeScript",
       "amount": 5
     },
     {
-      "tagId": "uuid-3",
+      "tagId": "rxjs",
       "name": "RxJS",
       "amount": 8
     }

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MdViewer } from '../../shared/tui-editor/md-viewer/md-viewer';
 import { About } from './services/about';
@@ -8,6 +8,7 @@ import { About } from './services/about';
   imports: [MdViewer],
   templateUrl: './about-page.html',
   styleUrl: './about-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AboutPage implements OnInit {
   mdViewerContent = signal<string>('');

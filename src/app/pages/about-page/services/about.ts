@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 
 interface AboutContent {
   content: string;
@@ -19,6 +19,6 @@ export class About {
    * @returns 返回包含 markdown 內容的 Observable
    */
   getAboutContent(): Observable<AboutContent> {
-    return this.http.get<AboutContent>(this.apiUrl);
+    return this.http.get<AboutContent>(this.apiUrl).pipe(shareReplay(1));
   }
 }
