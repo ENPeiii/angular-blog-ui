@@ -1,1 +1,83 @@
-<p>tag-content works!</p>
+<section class="grid grid-cols-1 md:grid-cols-12 gap-5">
+
+  <!-- Tag 選單 -->
+  <div class="sticky top-16 z-10 col-span-1 md:col-span-2 md:self-start md:max-h-[calc(100vh-5rem)] md:overflow-y-auto">
+
+    <!-- 手機：下拉按鈕 -->
+    <div class="relative md:hidden">
+      <button
+        type="button"
+        class="flex w-full items-center justify-between px-4 py-2.5 rounded-md
+               bg-dark-400 border border-dark-300 hover:border-primary-500 transition-colors duration-200"
+        (click)="mobileMenuOpen.set(!mobileMenuOpen())"
+      >
+        <span class="text-sm font-medium text-primary-500"># {{ activeTagName() }}</span>
+        <i class="fa-solid fa-chevron-down text-dark-50 text-xs transition-transform duration-300"
+          [class.-rotate-180]="mobileMenuOpen()"></i>
+      </button>
+
+      <!-- 下拉選單（absolute，不推擠內容） -->
+      <nav
+        class="absolute left-0 right-0 mt-1 z-20 rounded-md bg-dark-400 shadow-lg overflow-hidden
+               grid transition-all duration-300 ease-in-out"
+        [class.border]="mobileMenuOpen()"
+        [class.border-dark-300]="mobileMenuOpen()"
+        [class.grid-rows-[0fr]]="!mobileMenuOpen()"
+        [class.grid-rows-[1fr]]="mobileMenuOpen()"
+      >
+        <div class="overflow-hidden">
+          @for (tag of activeTagsList(); track tag.tagId) {
+            <a
+              [routerLink]="['/tags', tag.tagId]"
+              (click)="mobileMenuOpen.set(false)"
+              class="flex items-center justify-between px-4 py-2.5 text-sm
+                     border-b border-dark-300 last:border-b-0 transition-colors duration-150"
+              [ngClass]="tag.active ? 'text-primary-500 font-medium' : 'hover:bg-dark-300'"
+            >
+              <span># {{ tag.name }}</span>
+              <span class="text-[11px] text-dark-50 bg-dark-500 px-1.5 py-0.5 rounded-full">{{ tag.amount }}</span>
+            </a>
+          }
+        </div>
+      </nav>
+    </div>
+
+    <!-- 桌機：垂直列表 -->
+    <nav class="hidden md:grid md:grid-cols-1 gap-1">
+      @for (tag of activeTagsList(); track tag.tagId) {
+        <a
+          [routerLink]="['/tags', tag.tagId]"
+          [class]="'px-2 py-1 rounded-sm text-sm ' + (tag.active ? 'bg-primary-500' : 'hover:text-primary-500')"
+        >{{ tag.name }} <span class="text-[10px] text-dark-50">{{ tag.amount }}</span></a>
+      }
+    </nav>
+
+  </div>
+
+  <!-- 文章列表 -->
+  <div class="col-span-1 md:col-span-10">
+    <ul>
+      @for (article of articleList(); track article.id) {
+        <li class="border-b border-dark-300 py-3 md:py-5 md:flex items-start gap-10">
+          <div class="text-dark-50 text-sm break-keep mb-1 md:mb-0 md:w-28 shrink-0">
+            {{ article.date | date: 'yyyy年M月d日' }}
+          </div>
+          <div class="flex flex-col gap-1 md:gap-2">
+            <a [routerLink]="'/' + article.postUrl">
+              <h2 class="hover:text-primary-500 transition-colors ease-in-out">{{ article.title }}</h2>
+            </a>
+            <nav class="flex flex-wrap items-center gap-2">
+              @for (tag of article.tags; track tag.id) {
+                <a [routerLink]="['/tags', tag.id]" class="tag">{{ tag.name }}</a>
+              }
+            </nav>
+            <p class="text-dark-50 text-justify line-clamp-2 text-sm">{{ article.summary }}</p>
+          </div>
+        </li>
+      } @empty {
+        <li class="py-5 text-dark-50">目前沒有文章...</li>
+      }
+    </ul>
+  </div>
+
+</section>

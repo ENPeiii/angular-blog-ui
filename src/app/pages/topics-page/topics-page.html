@@ -2,7 +2,7 @@
 <hr class="border-dark-50" />
 
 <section class="py-5">
-  <nav class="grid grid-cols-3 gap-5 text-center">
+  <nav class="grid grid-cols-3 md:grid-cols-4 gap-5 text-center">
     @for (topics of topicsList(); track topics.topicsId) {
       <a
         [routerLink]="['/topics', topics.topicsId]"

@@ -29,12 +29,12 @@ body {
   font-weight: 00;
   height: 100%;
 }
-h1{
+h1 {
   @apply text-xl md:text-2xl font-bold tracking-wider;
 }
-h2{
-  @apply text-lg md:text-xl font-bold tracking-wider ;
+h2 {
+  @apply text-lg md:text-xl font-bold tracking-wider;
 }
-p{
+p {
   @apply text-sm md:text-base tracking-wider;
 }

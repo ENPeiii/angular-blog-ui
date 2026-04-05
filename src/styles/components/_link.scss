@@ -2,9 +2,10 @@
   @apply text-primary-500 hover:text-primary-700 font-medium;
 }
 .link {
-  @apply bg-linear-to-t from-primary-500 to-10% hover:to-50% px-0.5;
+  @apply bg-linear-to-t from-primary-500 to-10%;
 }
 
-.tag, .link {
+.tag,
+.link {
   @apply text-sm md:text-base;
 }

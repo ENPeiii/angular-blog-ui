@@ -11,6 +11,10 @@
     {
       "name": "RxJS",
       "topicsId": "rxjs"
+    },
+    {
+      "name": "PowerShell",
+      "topicsId": "powershell"
     }
   ]
 }
