@@ -5,14 +5,7 @@ import { loadTuiViewer } from '../tui-editor.loader';
   selector: 'md-viewer',
   imports: [],
   template: `<div #viewerElement></div>`,
-  styles: [`
-    :host-context(app-index-page) .toastui-editor-contents h1,
-    :host-context(app-index-page) .toastui-editor-contents h2 {
-      border: none !important;
-      border-bottom: none !important;
-      padding-bottom: 0 !important;
-    }
-  `],
+  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MdViewer implements OnDestroy {

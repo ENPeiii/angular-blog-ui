@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { APP_TITLE } from '../../core/constants/base-constant';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ROUTES_CONSTANT } from '../../core/constants/routes-constant';
 import { MatMenuModule } from '@angular/material/menu';
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, CommonModule, MatMenuModule],
+  imports: [RouterLink, RouterLinkActive, CommonModule, MatMenuModule],
   template: `
     <header class="fixed w-full top-0 left-0 z-50" #header>
       <section class="max-w-[1440px] mx-auto p-4 flex items-center justify-between bg-dark-500 ">
@@ -79,6 +79,7 @@ import { MatMenuModule } from '@angular/material/menu';
           <li>
             <a
               class="hover:text-primary-500 px-5 py-3 md:p-0"
+              routerLinkActive="text-primary-500 md:text-white md:border-b md:border-primary-500"
               [routerLink]="[ROUTES_CONSTANT['POSTS'].url]"
               >Posts</a
             >
@@ -86,6 +87,7 @@ import { MatMenuModule } from '@angular/material/menu';
           <li>
             <a
               class="hover:text-primary-500 px-5 py-3 md:p-0"
+              routerLinkActive="text-primary-500 md:text-white md:border-b md:border-primary-500"
               [routerLink]="[ROUTES_CONSTANT['TOPICS'].url]"
               >Topics</a
             >
@@ -93,6 +95,7 @@ import { MatMenuModule } from '@angular/material/menu';
           <li>
             <a
               class="hover:text-primary-500 px-5 py-3 md:p-0"
+              routerLinkActive="text-primary-500 md:text-white md:border-b md:border-primary-500"
               [routerLink]="[ROUTES_CONSTANT['TAGS'].url]"
               >Tags</a
             >
@@ -100,6 +103,7 @@ import { MatMenuModule } from '@angular/material/menu';
           <li>
             <a
               class="hover:text-primary-500 px-5 py-3 md:p-0"
+              routerLinkActive="text-primary-500 md:text-white md:border-b md:border-primary-500"
               [routerLink]="[ROUTES_CONSTANT['ABOUT'].url]"
               >About</a
             >

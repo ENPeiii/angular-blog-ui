@@ -5,6 +5,7 @@ import { Header } from './header/header';
 import { Footer } from './footer/footer';
 import { fromEvent, Subscription } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
+import { LayoutConfig } from '../core/services/layout-config';
 
 @Component({
   selector: 'app-layout',
@@ -12,7 +13,9 @@ import { throttleTime } from 'rxjs/operators';
   template: `
     <app-header (height)="setHeaderHeight($event)" />
     <section
-      class="flex-1 w-full max-w-[1024px] mx-auto px-4 md:px-8"
+      class="flex-1 w-full mx-auto px-4 md:px-8"
+      [style.maxWidth]="layoutConfig.maxW()"
+      [style.--blog-max-w]="layoutConfig.maxW()"
       [style.marginTop.px]="headerHeight()"
     >
       <router-outlet />
@@ -20,7 +23,7 @@ import { throttleTime } from 'rxjs/operators';
 
     @if (shouldShowScrollButton()) {
     <div class="fixed bottom-40 z-50 w-full flex justify-center pointer-events-none">
-      <div class="w-full max-w-[1024px] px-4 md:px-8 flex justify-end">
+      <div class="w-full px-4 md:px-8 flex justify-end" [style.maxWidth]="layoutConfig.maxW()">
         <button
           (click)="scrollToTop()"
           class="border-1 border-white rounded-lg px-2 py-1 hover:border-primary-500 group transition-opacity pointer-events-auto"
@@ -46,6 +49,7 @@ import { throttleTime } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Layout implements OnInit, OnDestroy {
+  layoutConfig = inject(LayoutConfig);
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
   private scrollSub?: Subscription;

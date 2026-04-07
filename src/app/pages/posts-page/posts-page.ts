@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Posts, PostsRes, PostsTab } from './services/posts';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { LayoutConfig } from '../../core/services/layout-config';
 
 @Component({
   selector: 'app-posts-page',
@@ -11,7 +12,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './posts-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PostsPage implements OnInit {
+export class PostsPage implements OnInit, OnDestroy {
 
   tabs = signal<PostsTab[]>([]);
   selectedTab = signal<string>('all');
@@ -20,10 +21,11 @@ export class PostsPage implements OnInit {
   // rxResource: 當 selectedTab 變化時，自動呼叫 API 取得文章列表
   postsResource = rxResource<PostsRes, { tab: string; page: number }>({
     params: () => ({ tab: this.selectedTab(), page: this.page() }),
-    stream: ({ params }) => this.service.getPostsList(params.tab, params.page),
+    stream: ({ params }) => this.service.getPostsList$(params.tab, params.page),
   });
 
   postsRes = computed(() => this.postsResource.value());
+  private layoutConfig = inject(LayoutConfig);
 
   private destroyRef = inject(DestroyRef);
 
@@ -31,10 +33,14 @@ export class PostsPage implements OnInit {
 
   ngOnInit(): void {
     this.loadPostsTab();
+    this.layoutConfig.maxW.set('785px');
+  }
+  ngOnDestroy(): void {
+    this.layoutConfig.maxW.set('1024px');
   }
 
   private loadPostsTab(): void {
-    this.service.getPostsTab().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+    this.service.getPostsTab$().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
         this.tabs.set(res);
       },

@@ -180,9 +180,9 @@
       ]
     }
   },
-  "programming": {
+  "tech": {
     "1": {
-      "tab": "programming",
+      "tab": "tech",
       "page": 1,
       "totalPages": 3,
       "hasNext": true,
@@ -231,7 +231,7 @@
       ]
     },
     "2": {
-      "tab": "programming",
+      "tab": "tech",
       "page": 2,
       "totalPages": 3,
       "hasNext": true,
@@ -288,7 +288,7 @@
       ]
     },
     "3": {
-      "tab": "programming",
+      "tab": "tech",
       "page": 3,
       "totalPages": 3,
       "hasNext": false,
@@ -342,7 +342,7 @@
               "date": "2026-03-08",
               "topics": "",
               "summary": "三月初的陽明山花季，記錄這次愉快的登山體驗。",
-              "postUrl": "blog/yangmingshan"
+              "postUrl": "blog/550e8400-e29b-41d4-a716-446655440001"
             }
           ]
         },
