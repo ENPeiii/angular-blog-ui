@@ -24,8 +24,9 @@ export const routes: Routes = [
       /** 單篇文章（動態路由） */
       {
         path: ROUTES_CONSTANT['BLOG'].url,
-        title: (route: ActivatedRouteSnapshot) => `${route.paramMap.get('blogId')} - ${APP_TITLE}`,
-        loadComponent: () => import('./pages/posts-page/blog-content/blog-content').then((m) => m.BlogContent),
+        title: '動態路由',
+        loadComponent: () =>
+          import('./pages/posts-page/blog-content/blog-content').then((m) => m.BlogContent),
       },
       /** 主題相關路由（巢狀） */
       {
@@ -44,8 +45,7 @@ export const routes: Routes = [
               /** /topics/:topicsId - 主題首頁 */
               {
                 path: '',
-                title: (route: ActivatedRouteSnapshot) =>
-                  `${route.paramMap.get('topicsId')} - ${APP_TITLE}`,
+                title: (route: ActivatedRouteSnapshot) => `${route.paramMap.get('topicsId')}`,
                 loadComponent: () =>
                   import('./pages/topics-page/topic-content/topic-content').then(
                     (m) => m.TopicContent,
@@ -55,8 +55,7 @@ export const routes: Routes = [
               {
                 path: ROUTES_CONSTANT['TOPICS'].children?.TOPICS_CONTENT?.children?.TOPICS_ARTICLE
                   ?.url,
-                title: (route: ActivatedRouteSnapshot) =>
-                  `${route.paramMap.get('articleId')} - ${APP_TITLE}`,
+                title: '動態路由',
                 loadComponent: () =>
                   import('./pages/topics-page/topic-content/topic-content').then(
                     (m) => m.TopicContent,

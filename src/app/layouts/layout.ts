@@ -21,7 +21,7 @@ import { LayoutConfig } from '../core/services/layout-config';
       <router-outlet />
     </section>
 
-    @if (shouldShowScrollButton()) {
+    <!-- @if (shouldShowScrollButton()) {
     <div class="fixed bottom-40 z-50 w-full flex justify-center pointer-events-none">
       <div class="w-full px-4 md:px-8 flex justify-end" [style.maxWidth]="layoutConfig.maxW()">
         <button
@@ -33,7 +33,7 @@ import { LayoutConfig } from '../core/services/layout-config';
         </button>
       </div>
     </div>
-    }
+    } -->
 
     <app-footer />
   `,

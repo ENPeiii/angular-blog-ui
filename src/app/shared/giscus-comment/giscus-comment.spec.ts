@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BackToTop } from './back-to-top';
+import { GiscusComment } from './giscus-comment';
 
-describe('BackToTop', () => {
-  let component: BackToTop;
-  let fixture: ComponentFixture<BackToTop>;
+describe('GiscusComment', () => {
+  let component: GiscusComment;
+  let fixture: ComponentFixture<GiscusComment>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BackToTop]
+      imports: [GiscusComment]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BackToTop);
+    fixture = TestBed.createComponent(GiscusComment);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
