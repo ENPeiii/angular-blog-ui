@@ -7,13 +7,31 @@ export interface TopicsList {
   topicsId: string;
 }
 
-@Injectable({ providedIn: 'root' })
+export interface TopicNavRes {
+  id: string;
+  name: string;
+  items?: TopicNavRes[]; // 遞迴定義
+}
+
+
+
+@Injectable()
+
 export class Topics {
   constructor(private http: HttpClient) {}
 
   getTopicsList(): Observable<TopicsList[]> {
-    return this.http
-      .get<{ data: TopicsList[] }>('api/topicsList.json')
-      .pipe(map((res) => res.data), shareReplay(1));
+    return this.http.get<{ data: TopicsList[] }>('api/topicsList.json').pipe(
+      map((res) => res.data),
+      shareReplay(1),
+    );
+  }
+
+  getTopicNavList(topicsId: string): Observable<TopicNavRes[]> {
+    console.log('topicsId', topicsId);
+    return this.http.get<{ data: TopicNavRes[] }>('api/topicNav.json').pipe(
+      map((res) => res.data),
+      shareReplay(1),
+    );
   }
 }

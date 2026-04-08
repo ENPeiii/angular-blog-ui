@@ -1,1 +1,28 @@
-<p>topic-content works!</p>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+  <!-- 側邊導航 -->
+  <section class="col-span-4 md:col-span-2 bg-dark-400 p-4 rounded-lg">
+    <nav class="flex flex-col gap-2">
+      @for (nav of topicNav(); track nav.id) {
+        <div>
+          <h3 class="font-medium">{{ nav.name }}</h3>
+          @if (nav.items) {
+            <ul class="ml-4 mt-1 flex flex-col gap-1">
+              @for (item of nav.items; track item.id) {
+                <li>
+                  <a
+                    [routerLink]="['/topics', topicsId(), item.id]"
+                    [class]="
+                      'block px-2 py-1 rounded-sm text-sm ' +
+                      (item.isActive ? 'bg-primary-500' : 'hover:text-primary-500')
+                    "
+                    >{{ item.name }}</a
+                  >
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      }
+    </nav>
+  </section>
+</div>

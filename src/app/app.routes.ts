@@ -45,7 +45,7 @@ export const routes: Routes = [
               /** /topics/:topicsId - 主題首頁 */
               {
                 path: '',
-                title: (route: ActivatedRouteSnapshot) => `${route.paramMap.get('topicsId')}`,
+                title: (route: ActivatedRouteSnapshot) => `${route.paramMap.get('topicsId')} - ${APP_TITLE}`,
                 loadComponent: () =>
                   import('./pages/topics-page/topic-content/topic-content').then(
                     (m) => m.TopicContent,

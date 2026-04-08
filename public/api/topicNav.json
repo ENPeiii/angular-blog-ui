@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "id": "overview",
+      "name": "Overview",
+      "items": [{ "id": "readme", "name": "readme" }]
+    },
+    {
+      "id": "category-1",
+      "name": "項目一",
+      "items": [
+        { "id": "p1-a1", "name": "文章一" },
+        { "id": "p1-a2", "name": "文章二" }
+      ]
+    },
+    {
+      "id": "category-2",
+      "name": "項目二",
+      "items": [
+        { "id": "p2-a1", "name": "文章一" },
+        { "id": "p2-a2", "name": "文章二" }
+      ]
+    }
+  ]
+}

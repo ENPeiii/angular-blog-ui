@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   templateUrl: './topics-page.html',
   styleUrl: './topics-page.scss',
+  providers: [Topics],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopicsPage implements OnInit {
