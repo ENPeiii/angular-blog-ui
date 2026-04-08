@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, shareReplay } from 'rxjs';
+import { Post } from '../../../shared/post/post';
 
 export interface TopicsList {
   name: string;
@@ -34,4 +35,11 @@ export class Topics {
       shareReplay(1),
     );
   }
+
+    getPost$(articleId: string): Observable<Post> {
+      return this.http
+        .get<{ data: Post }>('/api/post.json')
+        .pipe(map((res) => res.data));
+    }
+  
 }

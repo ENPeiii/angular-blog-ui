@@ -1,6 +1,15 @@
 <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
-  <!-- 側邊導航 -->
-  <section class="col-span-4 md:col-span-2 bg-dark-400 p-4 rounded-lg">
+  <!-- 側邊導航 spacer（維持 grid 佔位） -->
+  <aside #sidebarSpacer class="hidden md:block md:col-span-3"></aside>
+
+  <!-- Fixed 側邊導航（定位由 JS 動態計算） -->
+  <div
+    class="hidden md:block fixed bg-dark-400 p-4 rounded-lg overflow-y-auto sidebar-scroll"
+    [style.top.px]="sidebarTop()"
+    [style.left.px]="sidebarLeft()"
+    [style.width.px]="sidebarWidth()"
+    [style.maxHeight]="'calc(100vh - ' + sidebarTop() + 'px)'"
+  >
     <nav class="flex flex-col gap-2">
       @for (nav of topicNav(); track nav.id) {
         <div>
@@ -10,10 +19,10 @@
               @for (item of nav.items; track item.id) {
                 <li>
                   <a
-                    [routerLink]="['/topics', topicsId(), item.id]"
+                    [routerLink]="item.id === 'readme' ? ['/topics', topicsId()] : ['/topics', topicsId(), item.id]"
                     [class]="
                       'block px-2 py-1 rounded-sm text-sm ' +
-                      (item.isActive ? 'bg-primary-500' : 'hover:text-primary-500')
+                      (item.id === (articleId() || 'readme') ? 'bg-primary-500' : 'hover:text-primary-500')
                     "
                     >{{ item.name }}</a
                   >
@@ -24,5 +33,10 @@
         </div>
       }
     </nav>
+  </div>
+
+  <section class="col-span-12 md:col-span-9">
+    <app-post [post]="post()" />
+    <giscus-comment />
   </section>
 </div>

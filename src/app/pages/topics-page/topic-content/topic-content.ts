@@ -1,16 +1,23 @@
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  effect,
+  ElementRef,
   inject,
   input,
   OnInit,
   signal,
+  viewChild,
 } from '@angular/core';
 import { TopicNavRes, Topics } from '../services/topics';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-
+import { Post, PostComponent } from '../../../shared/post/post';
+import { GiscusComment } from '../../../shared/giscus-comment/giscus-comment';
+import { Title } from '@angular/platform-browser';
+import { fromEvent } from 'rxjs';
 
 export interface TopicNavItem extends TopicNavRes {
   isActive: boolean;
@@ -24,7 +31,7 @@ interface TopicNav {
 
 @Component({
   selector: 'app-topic-content',
-  imports: [RouterLink],
+  imports: [RouterLink, PostComponent, GiscusComment],
   templateUrl: './topic-content.html',
   styleUrl: './topic-content.scss',
   providers: [Topics],
@@ -34,9 +41,28 @@ export class TopicContent implements OnInit {
   topicsId = input<string>();
   articleId = input<string>();
   topicNav = signal<TopicNav[]>([]);
+  private titleService = inject(Title);
 
+  post = signal<Post | null>(null);
+  sidebarLeft = signal(0);
+  sidebarWidth = signal(0);
+  sidebarTop = signal(0);
+
+  private sidebarSpacer = viewChild<ElementRef>('sidebarSpacer');
   private destroyRef = inject(DestroyRef);
-  constructor(private service: Topics) {}
+
+  constructor(private service: Topics) {
+    effect(() => {
+      this.loadPost();
+    });
+
+    afterNextRender(() => {
+      this.updateSidebarPos();
+      fromEvent(window, 'resize')
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => this.updateSidebarPos());
+    });
+  }
 
   ngOnInit(): void {
     if (this.topicsId()) {
@@ -44,7 +70,20 @@ export class TopicContent implements OnInit {
     }
   }
 
-  getTopicNavList(topicsId: string): void {
+  private updateSidebarPos(): void {
+    const el = this.sidebarSpacer()?.nativeElement;
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      this.sidebarLeft.set(rect.left);
+      this.sidebarWidth.set(rect.width);
+    }
+    const header = document.querySelector('header');
+    if (header) {
+      this.sidebarTop.set(header.getBoundingClientRect().height);
+    }
+  }
+
+  private getTopicNavList(topicsId: string): void {
     this.service
       .getTopicNavList(topicsId)
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -59,10 +98,27 @@ export class TopicContent implements OnInit {
             })),
           }));
           this.topicNav.set(navWithActive);
-
         },
         error: (error) => {
           console.error('Error fetching topic navigation:', error);
+        },
+      });
+  }
+
+  private loadPost(): void {
+    this.service
+      .getPost$(this.articleId() || 'readme')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res) => {
+          this.post.set(res);
+          if (res?.title && this.articleId()) {
+            this.titleService.setTitle(`${res.title}\u2002|\u2002${this.topicsId()}`);
+          }
+        },
+        error: (error) => {
+          console.error('載入文章失敗:', error);
+          this.post.set(null);
         },
       });
   }
