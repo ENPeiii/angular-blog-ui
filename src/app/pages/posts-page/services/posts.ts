@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map, shareReplay } from 'rxjs';
+import { Post } from '../../../shared/post/post';
 
 export interface PostsTab {
   name: string;
@@ -27,19 +28,7 @@ export interface PostsList {
     postUrl: string;
   }[];
 }
-export interface Post {
-  id: string;
-  title: string;
-  date: string;
-  content: string;
-  categoryId: string;
-  topicId: string | null;
-  toc?: string[];
-  tags: {
-    tagId: string;
-    name: string;
-  }[];
-}
+
 
 @Injectable({
   providedIn: 'root',

@@ -21,6 +21,16 @@
         "tagId": "typeScript",
         "name": "TypeScript"
       }
-    ]
+    ],
+    "changePag": {
+      "previous": {
+        "id": "550e8400-e29b-41d4-a716-446655440000",
+        "title": "前端性能優化技巧總結"
+      },
+      "next": {
+        "id": "550e8400-e29b-41d4-a716-446655440022",
+        "title": "後端性能優化技巧總結"
+      }
+    }
   }
 }

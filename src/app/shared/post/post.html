@@ -38,7 +38,7 @@
     </div>
   }
 
-  <section class="mt-5">
+  <section class="mt-5 text-justify">
     <md-viewer [content]="content()" />
   </section>
 
@@ -56,9 +56,40 @@
   </section>
 </article>
 
+<!-- 上一篇下一篇 -->
+<section class="flex justify-between items-center mt-10 py-5 border-t border-dark-50">
+  @if (changePag().previous) {
+    <a
+      [routerLink]="[baseurl(),changePag().previous?.id]"
+      class="group flex items-center gap-3 text-dark-50 hover:text-primary-500 transition-colors"
+    >
+      <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+      <div>
+        <p class="text-sm">上一篇</p>
+        <h4>{{ changePag().previous?.title }}</h4>
+      </div>
+    </a>
+  } @else {
+    <div></div>
+  }
+
+  @if (changePag().next) {
+    <a
+      [routerLink]="[baseurl(), changePag().next?.id]"
+      class="group flex items-center gap-3 text-dark-50 hover:text-primary-500 transition-colors"
+    >
+      <div class="text-right">
+        <p class="text-sm">下一篇</p>
+        <h4>{{ changePag().next?.title }}</h4>
+      </div>
+      <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+    </a>
+  }
+</section>
+
 <!-- 桌機固定目錄 (視窗夠寬才顯示) -->
 @if (toc().length > 0) {
-  <aside class="toc-sidebar text-sm">
+  <aside class="toc-sidebar">
     <p class="toc-sidebar-title">目錄</p>
     <ul class="toc-list open">
       @for (item of toc(); track item; let i = $index) {

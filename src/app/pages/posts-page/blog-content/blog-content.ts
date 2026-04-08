@@ -9,10 +9,10 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { Post, Posts } from '../services/posts';
+import { Posts } from '../services/posts';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LayoutConfig } from '../../../core/services/layout-config';
-import { PostComponent } from '../../../shared/post/post';
+import { Post, PostComponent } from '../../../shared/post/post';
 
 @Component({
   selector: 'app-blog-content',

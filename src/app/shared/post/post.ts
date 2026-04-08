@@ -10,12 +10,33 @@ import {
   signal,
 } from '@angular/core';
 import { isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { Post as PostData } from '../../pages/posts-page/services/posts';
 import { MdViewer } from '../tui-editor/md-viewer/md-viewer';
 import { RouterLink } from '@angular/router';
 import { fromEvent, Subscription } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
-
+export interface Post {
+  id: string;
+  title: string;
+  date: string;
+  content: string;
+  categoryId: string;
+  topicId: string | null;
+  toc?: string[];
+  tags: {
+    tagId: string;
+    name: string;
+  }[];
+  changePag: {
+    previous?: {
+      id: string;
+      title: string;
+    };
+    next?: {
+      id: string;
+      title: string;
+    };
+  };
+}
 @Component({
   selector: 'app-post',
   imports: [MdViewer, RouterLink],
@@ -24,13 +45,15 @@ import { throttleTime } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostComponent implements OnDestroy {
-  post = input<PostData | null>(null);
+  post = input<Post | null>(null);
 
   title = computed(() => this.post()?.title || '');
   date = computed(() => this.post()?.date || '');
   content = computed(() => this.post()?.content || '');
   tags = computed(() => this.post()?.tags || []);
   toc = computed(() => this.post()?.toc || []);
+  changePag = computed(() => this.post()?.changePag || {});
+  baseurl = computed(() => this.post()?.topicId ? `/topic/${this.post()?.topicId}` : `/blog`);
   tocOpen = signal(false);
   activeHeading = signal<string>('');
 
