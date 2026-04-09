@@ -60,6 +60,7 @@ export class Layout implements OnInit, OnDestroy {
 
   setHeaderHeight(e: number): void {
     this.headerHeight.set(e);
+    this.layoutConfig.headerHeight.set(e);
   }
 
   ngOnInit(): void {

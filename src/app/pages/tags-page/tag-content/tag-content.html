@@ -49,7 +49,8 @@
       @for (tag of activeTagsList(); track tag.tagId) {
         <a
           [routerLink]="['/tags', tag.tagId]"
-          [class]="'px-2 py-1 rounded-sm text-sm ' + (tag.active ? 'bg-primary-500' : 'hover:text-primary-500')"
+          class="px-2 py-1 rounded-sm text-sm"
+          [ngClass]="tag.active ? 'bg-primary-500' : 'hover:text-primary-500'"
         >{{ tag.name }} <span class="text-[10px] text-dark-50">{{ tag.amount }}</span></a>
       }
     </nav>

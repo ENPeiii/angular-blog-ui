@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  effect,
   ElementRef,
   inject,
   input,
@@ -12,12 +11,14 @@ import {
   viewChild,
 } from '@angular/core';
 import { TopicNavRes, Topics } from '../services/topics';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Post, PostComponent } from '../../../shared/post/post';
 import { GiscusComment } from '../../../shared/giscus-comment/giscus-comment';
 import { Title } from '@angular/platform-browser';
-import { fromEvent } from 'rxjs';
+import { fromEvent, switchMap } from 'rxjs';
+import { LayoutConfig } from '../../../core/services/layout-config';
 
 export interface TopicNavItem extends TopicNavRes {
   isActive: boolean;
@@ -31,7 +32,7 @@ interface TopicNav {
 
 @Component({
   selector: 'app-topic-content',
-  imports: [RouterLink, PostComponent, GiscusComment],
+  imports: [RouterLink, NgClass, PostComponent, GiscusComment],
   templateUrl: './topic-content.html',
   styleUrl: './topic-content.scss',
   providers: [Topics],
@@ -41,20 +42,36 @@ export class TopicContent implements OnInit {
   topicsId = input<string>();
   articleId = input<string>();
   topicNav = signal<TopicNav[]>([]);
-  private titleService = inject(Title);
 
   post = signal<Post | null>(null);
   sidebarLeft = signal(0);
   sidebarWidth = signal(0);
   sidebarTop = signal(0);
 
-  private sidebarSpacer = viewChild<ElementRef>('sidebarSpacer');
-  private destroyRef = inject(DestroyRef);
+  private readonly titleService = inject(Title);
+  private readonly layoutConfig = inject(LayoutConfig);
+  private readonly sidebarSpacer = viewChild<ElementRef>('sidebarSpacer');
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor(private service: Topics) {
-    effect(() => {
-      this.loadPost();
-    });
+    // switchMap 確保 articleId 變更時自動取消前一個 HTTP 請求，避免訂閱累積與資料競爭
+    toObservable(this.articleId)
+      .pipe(
+        switchMap((id) => this.service.getPost$(id || 'readme')),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        next: (res) => {
+          this.post.set(res);
+          if (res?.title && this.articleId()) {
+            this.titleService.setTitle(`${res.title}\u2002|\u2002${this.topicsId()}`);
+          }
+        },
+        error: (error) => {
+          console.error('載入文章失敗:', error);
+          this.post.set(null);
+        },
+      });
 
     afterNextRender(() => {
       this.updateSidebarPos();
@@ -77,10 +94,8 @@ export class TopicContent implements OnInit {
       this.sidebarLeft.set(rect.left);
       this.sidebarWidth.set(rect.width);
     }
-    const header = document.querySelector('header');
-    if (header) {
-      this.sidebarTop.set(header.getBoundingClientRect().height);
-    }
+    // 從 LayoutConfig 取得 header 高度，取代脆弱的 document.querySelector
+    this.sidebarTop.set(this.layoutConfig.headerHeight());
   }
 
   private getTopicNavList(topicsId: string): void {
@@ -89,36 +104,17 @@ export class TopicContent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => {
-          // 將資料轉換的 items 轉為 TopicNavItem 並預設 isActive 為 false
           const navWithActive = data.map((nav) => ({
             ...nav,
             items: nav.items?.map((item) => ({
               ...item,
-              isActive: item.id === this.articleId(), // 根據 articleId 判斷是否為 active 項目
+              isActive: item.id === this.articleId(),
             })),
           }));
           this.topicNav.set(navWithActive);
         },
         error: (error) => {
           console.error('Error fetching topic navigation:', error);
-        },
-      });
-  }
-
-  private loadPost(): void {
-    this.service
-      .getPost$(this.articleId() || 'readme')
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (res) => {
-          this.post.set(res);
-          if (res?.title && this.articleId()) {
-            this.titleService.setTitle(`${res.title}\u2002|\u2002${this.topicsId()}`);
-          }
-        },
-        error: (error) => {
-          console.error('載入文章失敗:', error);
-          this.post.set(null);
         },
       });
   }

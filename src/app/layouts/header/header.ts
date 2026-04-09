@@ -1,22 +1,21 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  inject,
   output,
   signal,
   viewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { APP_TITLE } from '../../core/constants/base-constant';
-import { RouterLink, RouterLinkActive } from '@angular/router';
-import { ROUTES_CONSTANT } from '../../core/constants/routes-constant';
 import { MatMenuModule } from '@angular/material/menu';
-import { Search } from '../../shared/search/search';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { APP_TITLE } from '../../core/constants/base-constant';
+import { ROUTES_CONSTANT } from '../../core/constants/routes-constant';
+import { Search } from '../../shared/search/search';
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, CommonModule, MatMenuModule, Search],
+  imports: [RouterLink, RouterLinkActive, NgTemplateOutlet, MatMenuModule, Search],
   template: `
     <header class="fixed w-full top-0 left-0 z-50" #header>
       <section class="max-w-[1440px] mx-auto p-4 flex items-center justify-between bg-dark-500 ">
@@ -58,7 +57,7 @@ import { environment } from '../../../environments/environment';
               rel="noreferrer noopener"
               class="hover:text-primary-500"
             >
-              <i class="fa-brands fa-github"></i>
+              <i class="fa-brands fa-github" aria-hidden="true"></i>
             </a>
             <!-- LinkedIn -->
             <a
@@ -68,15 +67,17 @@ import { environment } from '../../../environments/environment';
               rel="noreferrer noopener"
               class="hover:text-primary-500"
             >
-              <i class="fa-brands fa-linkedin"></i>
+              <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
             </a>
           </div>
         </div>
         <button
+          type="button"
           [matMenuTriggerFor]="menu"
           class="inline-block md:hidden text-white hover:text-primary-500 ml-4"
+          aria-label="開啟導覽選單"
         >
-          <i class="fa-solid fa-bars text-xl"></i>
+          <i class="fa-solid fa-bars text-xl" aria-hidden="true"></i>
         </button>
         <mat-menu #menu="matMenu">
           <ng-container *ngTemplateOutlet="navMenu"></ng-container>

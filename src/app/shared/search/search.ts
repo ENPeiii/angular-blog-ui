@@ -55,7 +55,7 @@ export class Search implements AfterViewInit, OnDestroy {
         searchParameters: {
           hitsPerPage: 10,
         },
-        transformItems: (items: any[]) => {
+        transformItems: (items) => {
           return items.map((item) => {
             const lvl0 = item.hierarchy?.lvl0 || '';
             const lvl1 = item.hierarchy?.lvl1 || '';

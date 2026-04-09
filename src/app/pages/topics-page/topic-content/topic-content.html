@@ -20,10 +20,8 @@
                 <li>
                   <a
                     [routerLink]="item.id === 'readme' ? ['/topics', topicsId()] : ['/topics', topicsId(), item.id]"
-                    [class]="
-                      'block px-2 py-1 rounded-sm text-sm ' +
-                      (item.id === (articleId() || 'readme') ? 'bg-primary-500' : 'hover:text-primary-500')
-                    "
+                    class="block px-2 py-1 rounded-sm text-sm"
+                    [ngClass]="item.id === (articleId() || 'readme') ? 'bg-primary-500' : 'hover:text-primary-500'"
                     >{{ item.name }}</a
                   >
                 </li>
