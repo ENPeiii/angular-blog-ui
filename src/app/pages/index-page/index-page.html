@@ -20,8 +20,8 @@
             ><h2 class="hover:text-primary-500 transition ease-in-out">{{ article.title }}</h2></a
           >
           <nav class="flex item-center gap-5">
-            @for (tag of article.tags; track tag.id) {
-              <a [routerLink]="[`/tags/${tag.id}`]" class="tag">{{ tag.name }}</a>
+            @for (tag of article.tags; track tag.tagId) {
+              <a [routerLink]="[`/tags/${tag.tagId}`]" class="tag">{{ tag.name }}</a>
             }
           </nav>
           <p class="text-dark-50 text-justify line-clamp-2">

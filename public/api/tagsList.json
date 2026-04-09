@@ -1,19 +1,14 @@
 {
   "data": [
     {
-      "tagId": "angular",
-      "name": "Angular",
-      "amount": 10
+      "tagId": "life",
+      "name": "Life",
+      "amount": 1
     },
     {
-      "tagId": "typeScript",
-      "name": "TypeScript",
-      "amount": 5
-    },
-    {
-      "tagId": "rxjs",
-      "name": "RxJS",
-      "amount": 8
+      "tagId": "work",
+      "name": "Work",
+      "amount": 1
     }
   ]
 }

@@ -1,10 +1,10 @@
 {
   "all": {
     "1": {
-      "tab": "all",
+      "tab": "life",
       "page": 1,
-      "totalPages": 3,
-      "hasNext": true,
+      "totalPages": 2,
+      "hasNext": false,
       "hasPrevious": false,
       "dateRange": "2026-02 ~ 2026-04",
       "articles": [
@@ -13,311 +13,11 @@
           "posts": [
             {
               "id": 1,
-              "title": "Angular 19 新功能介紹",
-              "date": "2026-04-01",
-              "topics": "Angular",
-              "summary": "Angular 19 帶來了多項效能改進和新功能，包括改進的 SSR 支援和新的響應式 API。",
-              "postUrl": "topics/angular/uuid"
-            }
-          ]
-        },
-        {
-          "month": "2026-03",
-          "posts": [
-            {
-              "id": 2,
-              "title": "TypeScript 裝飾器完全指南",
-              "date": "2026-03-20",
-              "topics": "TypeScript",
-              "summary": "深入了解 TypeScript 5.x 裝飾器的使用方式，包括類別裝飾器、方法裝飾器和屬性裝飾器。",
-              "postUrl": "topics/typescript/uuid"
-            },
-            {
-              "id": 3,
-              "title": "週末爬山紀錄 - 陽明山",
-              "date": "2026-03-08",
+              "title": "職涯旅程回顧：從畢業到成為前端工程師",
+              "date": "2026-04-09",
               "topics": "",
-              "summary": "三月初的陽明山花季，記錄這次愉快的登山體驗。",
-              "postUrl": "blog/yangmingshan"
-            }
-          ]
-        },
-        {
-          "month": "2026-02",
-          "posts": [
-            {
-              "id": 4,
-              "title": "Angular Signal 深入探討",
-              "date": "2026-02-15",
-              "topics": "Angular",
-              "summary": "深入探討 Angular Signal 的運作原理，以及如何在專案中有效地使用它來管理狀態。",
-              "postUrl": "topics/angular/uuid"
-            },
-            {
-              "id": 5,
-              "title": "過年讀書心得 - 原子習慣",
-              "date": "2026-02-05",
-              "topics": "",
-              "summary": "農曆新年假期讀完了《原子習慣》，分享書中幾個讓我印象深刻的觀念。",
-              "postUrl": "blog/atomic-habits"
-            }
-          ]
-        }
-      ]
-    },
-    "2": {
-      "tab": "all",
-      "page": 2,
-      "totalPages": 3,
-      "hasNext": true,
-      "hasPrevious": true,
-      "dateRange": "2025-11 ~ 2026-01",
-      "articles": [
-        {
-          "month": "2026-01",
-          "posts": [
-            {
-              "id": 6,
-              "title": "RxJS 常用 Operator 整理",
-              "date": "2026-01-18",
-              "topics": "RxJS",
-              "summary": "整理 RxJS 中最常用的 Operator，包括 map、filter、switchMap、mergeMap 等，並附上實際範例。",
-              "postUrl": "topics/rxjs/uuid"
-            }
-          ]
-        },
-        {
-          "month": "2025-12",
-          "posts": [
-            {
-              "id": 7,
-              "title": "2025 年終回顧",
-              "date": "2025-12-28",
-              "topics": "",
-              "summary": "回顧 2025 年的學習歷程和生活點滴，展望 2026 年的目標。",
-              "postUrl": "blog/2025-review"
-            },
-            {
-              "id": 8,
-              "title": "Angular SSR 實戰指南",
-              "date": "2025-12-10",
-              "topics": "Angular",
-              "summary": "從零開始設定 Angular SSR，包含 SEO 優化、效能調校和部署流程。",
-              "postUrl": "topics/angular/uuid"
-            }
-          ]
-        },
-        {
-          "month": "2025-11",
-          "posts": [
-            {
-              "id": 9,
-              "title": "Tailwind CSS 實用技巧",
-              "date": "2025-11-22",
-              "topics": "CSS",
-              "summary": "分享幾個在 Angular 專案中使用 Tailwind CSS 的實用技巧和自訂配置。",
-              "postUrl": "topics/css/uuid"
-            },
-            {
-              "id": 10,
-              "title": "Angular 音樂播放器 (Music Player)",
-              "date": "2025-11-05",
-              "topics": "Angular",
-              "summary": "使用 Angular 建立一個簡單的音樂播放器，實現播放、暫停、停止等功能。",
-              "postUrl": "blog/musicplayer/uuid"
-            }
-          ]
-        }
-      ]
-    },
-    "3": {
-      "tab": "all",
-      "page": 3,
-      "totalPages": 3,
-      "hasNext": false,
-      "hasPrevious": true,
-      "dateRange": "2025-08 ~ 2025-10",
-      "articles": [
-        {
-          "month": "2025-10",
-          "posts": [
-            {
-              "id": 11,
-              "title": "NgRx 狀態管理入門",
-              "date": "2025-10-15",
-              "topics": "Angular",
-              "summary": "介紹 NgRx 的核心概念：Store、Action、Reducer、Effect，並用一個 Todo App 作為範例。",
-              "postUrl": "topics/angular/uuid"
-            }
-          ]
-        },
-        {
-          "month": "2025-09",
-          "posts": [
-            {
-              "id": 12,
-              "title": "中秋連假露營記",
-              "date": "2025-09-20",
-              "topics": "",
-              "summary": "中秋連假去了苗栗露營，記錄這次和朋友們一起的戶外體驗。",
-              "postUrl": "blog/camping"
-            }
-          ]
-        },
-        {
-          "month": "2025-08",
-          "posts": [
-            {
-              "id": 13,
-              "title": "Angular 範本驅動表單 (Template-Driven Form)",
-              "date": "2025-08-05",
-              "topics": "Angular",
-              "summary": "Angular 提供了 ngModel 指令來監控如 input、select 等表單輸入標籤，這指令也包含了 (ngModelChange) 的事件定義。",
-              "postUrl": "topics/angular/uuid"
-            }
-          ]
-        }
-      ]
-    }
-  },
-  "tech": {
-    "1": {
-      "tab": "tech",
-      "page": 1,
-      "totalPages": 3,
-      "hasNext": true,
-      "hasPrevious": false,
-      "dateRange": "2026-02 ~ 2026-04",
-      "articles": [
-        {
-          "month": "2026-04",
-          "posts": [
-            {
-              "id": 1,
-              "title": "Angular 19 新功能介紹",
-              "date": "2026-04-01",
-              "topics": "Angular",
-              "summary": "Angular 19 帶來了多項效能改進和新功能，包括改進的 SSR 支援和新的響應式 API。",
-              "postUrl": "topics/angular/uuid"
-            }
-          ]
-        },
-        {
-          "month": "2026-03",
-          "posts": [
-            {
-              "id": 2,
-              "title": "TypeScript 裝飾器完全指南",
-              "date": "2026-03-20",
-              "topics": "TypeScript",
-              "summary": "深入了解 TypeScript 5.x 裝飾器的使用方式，包括類別裝飾器、方法裝飾器和屬性裝飾器。",
-              "postUrl": "topics/typescript/uuid"
-            }
-          ]
-        },
-        {
-          "month": "2026-02",
-          "posts": [
-            {
-              "id": 4,
-              "title": "Angular Signal 深入探討",
-              "date": "2026-02-15",
-              "topics": "Angular",
-              "summary": "深入探討 Angular Signal 的運作原理，以及如何在專案中有效地使用它來管理狀態。",
-              "postUrl": "topics/angular/uuid"
-            }
-          ]
-        }
-      ]
-    },
-    "2": {
-      "tab": "tech",
-      "page": 2,
-      "totalPages": 3,
-      "hasNext": true,
-      "hasPrevious": true,
-      "dateRange": "2025-11 ~ 2026-01",
-      "articles": [
-        {
-          "month": "2026-01",
-          "posts": [
-            {
-              "id": 6,
-              "title": "RxJS 常用 Operator 整理",
-              "date": "2026-01-18",
-              "topics": "RxJS",
-              "summary": "整理 RxJS 中最常用的 Operator，包括 map、filter、switchMap、mergeMap 等，並附上實際範例。",
-              "postUrl": "topics/rxjs/uuid"
-            }
-          ]
-        },
-        {
-          "month": "2025-12",
-          "posts": [
-            {
-              "id": 8,
-              "title": "Angular SSR 實戰指南",
-              "date": "2025-12-10",
-              "topics": "Angular",
-              "summary": "從零開始設定 Angular SSR，包含 SEO 優化、效能調校和部署流程。",
-              "postUrl": "topics/angular/uuid"
-            }
-          ]
-        },
-        {
-          "month": "2025-11",
-          "posts": [
-            {
-              "id": 9,
-              "title": "Tailwind CSS 實用技巧",
-              "date": "2025-11-22",
-              "topics": "CSS",
-              "summary": "分享幾個在 Angular 專案中使用 Tailwind CSS 的實用技巧和自訂配置。",
-              "postUrl": "topics/css/uuid"
-            },
-            {
-              "id": 10,
-              "title": "Angular 音樂播放器 (Music Player)",
-              "date": "2025-11-05",
-              "topics": "Angular",
-              "summary": "使用 Angular 建立一個簡單的音樂播放器，實現播放、暫停、停止等功能。",
-              "postUrl": "blog/musicplayer/uuid"
-            }
-          ]
-        }
-      ]
-    },
-    "3": {
-      "tab": "tech",
-      "page": 3,
-      "totalPages": 3,
-      "hasNext": false,
-      "hasPrevious": true,
-      "dateRange": "2025-08 ~ 2025-10",
-      "articles": [
-        {
-          "month": "2025-10",
-          "posts": [
-            {
-              "id": 11,
-              "title": "NgRx 狀態管理入門",
-              "date": "2025-10-15",
-              "topics": "Angular",
-              "summary": "介紹 NgRx 的核心概念：Store、Action、Reducer、Effect，並用一個 Todo App 作為範例。",
-              "postUrl": "topics/angular/uuid"
-            }
-          ]
-        },
-        {
-          "month": "2025-08",
-          "posts": [
-            {
-              "id": 13,
-              "title": "Angular 範本驅動表單 (Template-Driven Form)",
-              "date": "2025-08-05",
-              "topics": "Angular",
-              "summary": "Angular 提供了 ngModel 指令來監控如 input、select 等表單輸入標籤，這指令也包含了 (ngModelChange) 的事件定義。",
-              "postUrl": "topics/angular/uuid"
+              "summary": "回顧自己的職涯旅程，從大學畢業到成為前端工程師的心路歷程。",
+              "postUrl": "blog/550e8400-e29b-41d4-a716-446655440001"
             }
           ]
         }
@@ -329,69 +29,20 @@
       "tab": "life",
       "page": 1,
       "totalPages": 2,
-      "hasNext": true,
+      "hasNext": false,
       "hasPrevious": false,
       "dateRange": "2026-02 ~ 2026-04",
       "articles": [
         {
-          "month": "2026-03",
+          "month": "2026-04",
           "posts": [
             {
-              "id": 3,
-              "title": "週末爬山紀錄 - 陽明山",
-              "date": "2026-03-08",
+              "id": 1,
+              "title": "職涯旅程回顧：從畢業到成為前端工程師",
+              "date": "2026-04-09",
               "topics": "",
-              "summary": "三月初的陽明山花季，記錄這次愉快的登山體驗。",
+              "summary": "回顧自己的職涯旅程，從大學畢業到成為前端工程師的心路歷程。",
               "postUrl": "blog/550e8400-e29b-41d4-a716-446655440001"
-            }
-          ]
-        },
-        {
-          "month": "2026-02",
-          "posts": [
-            {
-              "id": 5,
-              "title": "過年讀書心得 - 原子習慣",
-              "date": "2026-02-05",
-              "topics": "",
-              "summary": "農曆新年假期讀完了《原子習慣》，分享書中幾個讓我印象深刻的觀念。",
-              "postUrl": "blog/atomic-habits/uuid"
-            }
-          ]
-        }
-      ]
-    },
-    "2": {
-      "tab": "life",
-      "page": 2,
-      "totalPages": 2,
-      "hasNext": false,
-      "hasPrevious": true,
-      "dateRange": "2025-11 ~ 2026-01",
-      "articles": [
-        {
-          "month": "2025-12",
-          "posts": [
-            {
-              "id": 7,
-              "title": "2025 年終回顧",
-              "date": "2025-12-28",
-              "topics": "",
-              "summary": "回顧 2025 年的學習歷程和生活點滴，展望 2026 年的目標。",
-              "postUrl": "blog/2025-review"
-            }
-          ]
-        },
-        {
-          "month": "2025-09",
-          "posts": [
-            {
-              "id": 12,
-              "title": "中秋連假露營記",
-              "date": "2025-09-20",
-              "topics": "",
-              "summary": "中秋連假去了苗栗露營，記錄這次和朋友們一起的戶外體驗。",
-              "postUrl": "blog/camping"
             }
           ]
         }

@@ -7,7 +7,7 @@ export interface IndexArticle{
   id: number;
   title: string;
   date: string;
-  tags: { name: string; id: string }[];
+  tags: { name: string; tagId: string }[];
   summary: string;
   postUrl: string;
 }

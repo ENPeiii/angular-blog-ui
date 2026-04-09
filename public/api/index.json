@@ -2,41 +2,20 @@
   "articles": [
     {
       "id": 1,
-      "title": "Angular 範本驅動表單 (Template-Driven Form)",
-      "date": "2025-05-05",
+      "title": "職涯旅程回顧：從畢業到成為前端工程師",
+      "date": "2026-04-09",
       "tags": [
         {
-          "name": "Angular",
-          "id": "angular"
+          "tagId": "life",
+          "name": "Life"
         },
         {
-          "name": "Forms",
-          "id": "forms"
+          "tagId": "work",
+          "name": "Work"
         }
       ],
-      "summary": "Angular 提供了 ngModel 指令來監控如 input 、select 等表單輸入標籤，這指令也包含了 (ngModelChange) 的事件定義，除了利用雙向繫結至 `ngModel` 指令外，也可以在表單標間中設定範本參考變數，並將此變數值傳入查詢方法內",
-      "postUrl": "topics/angular/uuid"
-    },
-    {
-      "id": 2,
-      "title": "Angular 音樂播放器 (Music Player)",
-      "date": "2025-05-06",
-      "tags": [
-        {
-          "name": "Angular",
-          "id": "angular"
-        },
-        {
-          "name": "FrontEnd",
-          "id": "frontend"
-        },
-        {
-          "name": "Audio",
-          "id": "audio"
-        }
-      ],
-      "summary": "使用 Angular 建立一個簡單的音樂播放器，實現播放、暫停、停止等功能。",
-      "postUrl": "blog/musicplayer"
+      "summary": "畢業即失業? 2017年6月我大學畢業了，大學畢業其實是一件很可怕的事情，以前國中畢業就接著上高中，高中畢業接著上大學，好像一切都被安排的穩妥，但大學畢業後不給自己想後路就真的是「畢業即失業」；我是本科資訊工程系的，理所當然認為自己就是找個公司繼續寫程式，但由於大學也不是什麼名牌大學，內心總有一種有公司要我就很不錯了的想法，很大一部分也是因為根本不知道自己要做什麼，只知道一定跟寫程式有關但實際要",
+      "postUrl": "blog/550e8400-e29b-41d4-a716-446655440001"
     }
   ]
 }
