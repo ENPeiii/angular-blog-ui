@@ -21,6 +21,12 @@ export class AboutPage implements OnInit {
     this.loadAboutContent();
   }
 
+  /**
+   * 從 About 服務載入關於我內容，並更新 mdViewerContent 信號。
+   *
+   * @private
+   * @memberof AboutPage
+   */
   private loadAboutContent(): void {
     this.aboutService.getAboutContent().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (data) => {

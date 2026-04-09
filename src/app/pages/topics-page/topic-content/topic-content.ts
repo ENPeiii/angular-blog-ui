@@ -87,6 +87,12 @@ export class TopicContent implements OnInit {
     }
   }
 
+  /**
+   * 更新側邊欄位置與尺寸，根據 `sidebarSpacer` 的位置和尺寸動態調整 `sidebarLeft`、`sidebarWidth` 和 `sidebarTop` 的值，以確保側邊欄在視窗大小變化時保持正確的位置和尺寸。
+   *
+   * @private
+   * @memberof TopicContent
+   */
   private updateSidebarPos(): void {
     const el = this.sidebarSpacer()?.nativeElement;
     if (el) {
@@ -98,9 +104,16 @@ export class TopicContent implements OnInit {
     this.sidebarTop.set(this.layoutConfig.headerHeight());
   }
 
+  /**
+   * 根據 `topicsId` 從服務獲取主題導航列表，並更新 `topicNav` 信號。成功時將導航項目標記為活動狀態，失敗時在控制台輸出錯誤訊息。
+   *
+   * @private
+   * @param {string} topicsId
+   * @memberof TopicContent
+   */
   private getTopicNavList(topicsId: string): void {
     this.service
-      .getTopicNavList(topicsId)
+      .getTopicNavList$(topicsId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => {

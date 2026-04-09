@@ -22,8 +22,14 @@ export class TopicsPage implements OnInit {
     this.loadTopicList();
   }
 
+  /**
+   * 載入主題列表，成功時更新 `topicsList`，失敗時清空列表並在控制台輸出錯誤訊息。
+   *
+   * @private
+   * @memberof TopicsPage
+   */
   private loadTopicList(): void {
-    this.service.getTopicsList().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+    this.service.getTopicsList$().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (data) => {
         this.topicsList.set(data);
       },

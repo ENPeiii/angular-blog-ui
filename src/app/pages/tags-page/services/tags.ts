@@ -20,13 +20,27 @@ export interface ArticleList{
 export class Tags {
   constructor(private http: HttpClient) {}
 
-  getTagsList(): Observable<TagsList[]> {
+
+  /**
+   * 取得標籤列表
+   *
+   * @return {*}  {Observable<TagsList[]>}
+   * @memberof Tags
+   */
+  getTagsList$(): Observable<TagsList[]> {
     return this.http
       .get<{ data: TagsList[] }>('api/tagsList.json')
       .pipe(map((res) => res.data), shareReplay(1));
   }
 
-  getTagArticleList(tagId:string): Observable<ArticleList[]>{
+  /**
+   * 取得標籤文章列表
+   *
+   * @param {string} tagId
+   * @return {*}  {Observable<ArticleList[]>}
+   * @memberof Tags
+   */
+  getTagArticleList$(tagId:string): Observable<ArticleList[]>{
     return this.http.get<{data:ArticleList[]}>('api/tag.json')
     .pipe(map((res) => res.data), shareReplay(1));
   }

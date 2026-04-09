@@ -1,3 +1,4 @@
+import { Loading } from './../../shared/loading/loading';
 import { Injectable, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
@@ -6,4 +7,6 @@ export class LayoutConfig {
   maxW = signal('1024px');
   /** Header 高度（px），由 Layout 元件在 ngAfterViewInit 寫入。 */
   headerHeight = signal(0);
+  /** 控制全局 loading 狀態 */
+  loading = signal(false);
 }

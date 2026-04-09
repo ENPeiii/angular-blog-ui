@@ -1,14 +1,17 @@
-<div class="flex items-end gap-4">
+<!-- 選單tab -->
+<section class="flex items-end gap-4">
   @for (tab of tabs(); track tab.value) {
     <button
       type="button"
+      class="tabAnimation"
       [class.tabActive]="tab.value === selectedTab()"
       (click)="changeTab(tab.value)"
     >
       {{ tab.name }}
     </button>
   }
-</div>
+</section>
+
 <hr class="border-dark-50" />
 
 <!-- 文章列表 -->
@@ -36,21 +39,26 @@
         </ul>
       </li>
     } @empty {
-      <li>目前沒有文章...</li>
+      @if (!postsResource.isLoading()) {
+        <li>目前沒有文章...</li>
+      }
     }
   </ul>
+  <!-- 分頁按鈕 -->
   <div class="flex justify-end gap-4 mt-5">
     @if (postsRes()?.hasPrevious) {
-      <button type="button" (click)="changePage(-1)" class="group">
-        <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition ease-in mr-2" aria-hidden="true"></i
+      <button type="button" (click)="changePage(-1)" class="group text-dark-50 hover:text-white">
+        <i
+          class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition ease-in-out mr-2"
+          aria-hidden="true"
+        ></i
         >Previous
       </button>
     }
     @if (postsRes()?.hasNext) {
-      <button type="button" (click)="changePage(1)" class="group">
+      <button type="button" (click)="changePage(1)" class="group text-dark-50 hover:text-white">
         Next<i
-          class="fa-solid fa-arrow-right group-hover:translate-x-1 transition ease-in ml-2"
-          aria-hidden="true"
+          class="fa-solid fa-arrow-right group-hover:translate-x-1 transition ease-in-out ml-2"
         ></i>
       </button>
     }

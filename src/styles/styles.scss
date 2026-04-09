@@ -30,6 +30,15 @@ body {
   font-weight: 00;
   height: 100%;
 }
+:root {
+  @each $key, $value in color.$primary {
+    --color-primary-#{$key}: #{$value};
+  }
+
+  @each $key, $value in color.$dark {
+    --color-dark-#{$key}: #{$value};
+  }
+}
 h1 {
   @apply text-xl md:text-2xl font-bold tracking-wider;
 }

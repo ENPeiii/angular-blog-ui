@@ -36,6 +36,12 @@ export interface PostsList {
 export class Posts {
   constructor(private http: HttpClient) {}
 
+  /**
+   *  * 取得文章分類選單
+   *
+   * @return {*}  {Observable<PostsTab[]>}
+   * @memberof Posts
+   */
   getPostsTab$(): Observable<PostsTab[]> {
     return this.http.get<{ data: PostsTab[] }>('/api/postsTab.json').pipe(
       map((res) => res.data),
@@ -43,12 +49,27 @@ export class Posts {
     );
   }
 
+  /**
+   * 取得文章列表
+   *
+   * @param {string} tab
+   * @param {number} page
+   * @return {*}  {Observable<PostsRes>}
+   * @memberof Posts
+   */
   getPostsList$(tab: string, page: number): Observable<PostsRes> {
     return this.http
       .get<Record<string, Record<string, PostsRes>>>('/api/postsList.json')
       .pipe(map((res) => res[tab][String(page)]), shareReplay(1));
   }
 
+  /**
+   * 取得文章內容
+   *
+   * @param {string} blogId
+   * @return {*}  {Observable<Post>}
+   * @memberof Posts
+   */
   getPost$(blogId: string): Observable<Post> {
     return this.http
       .get<{ data: Post }>('/api/post.json')

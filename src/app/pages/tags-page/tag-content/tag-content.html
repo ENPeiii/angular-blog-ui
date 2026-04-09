@@ -1,27 +1,28 @@
 <section class="grid grid-cols-1 md:grid-cols-12 gap-5">
-
   <!-- Tag 選單 -->
-  <div class="sticky top-16 z-10 col-span-1 md:col-span-2 md:self-start md:max-h-[calc(100vh-5rem)] md:overflow-y-auto">
-
+  <div
+    class="sticky top-16 z-10 col-span-1 md:col-span-2 md:self-start md:max-h-[calc(100vh-5rem)] md:overflow-y-auto"
+  >
     <!-- 手機：下拉按鈕 -->
     <div class="relative md:hidden">
       <button
         type="button"
-        class="flex w-full items-center justify-between px-4 py-2.5 rounded-md
-               bg-dark-400 border border-dark-300 hover:border-primary-500 transition-colors duration-200"
+        class="flex w-full items-center justify-between px-4 py-2.5 rounded-md bg-dark-400 border border-dark-300 hover:border-primary-500 transition-colors duration-200"
         (click)="mobileMenuOpen.set(!mobileMenuOpen())"
         [attr.aria-expanded]="mobileMenuOpen()"
         aria-label="選擇標籤分類"
       >
         <span class="text-sm font-medium text-primary-500"># {{ activeTagName() }}</span>
-        <i class="fa-solid fa-chevron-down text-dark-50 text-xs transition-transform duration-300"
-          [class.-rotate-180]="mobileMenuOpen()" aria-hidden="true"></i>
+        <i
+          class="fa-solid fa-chevron-down text-dark-50 text-xs transition-transform duration-300"
+          [class.-rotate-180]="mobileMenuOpen()"
+          aria-hidden="true"
+        ></i>
       </button>
 
       <!-- 下拉選單（absolute，不推擠內容） -->
       <nav
-        class="absolute left-0 right-0 mt-1 z-20 rounded-md bg-dark-400 shadow-lg overflow-hidden
-               grid transition-all duration-300 ease-in-out"
+        class="absolute left-0 right-0 mt-1 z-20 rounded-md bg-dark-400 shadow-lg overflow-hidden grid transition-all duration-300 ease-in-out"
         [class.border]="mobileMenuOpen()"
         [class.border-dark-300]="mobileMenuOpen()"
         [class.grid-rows-[0fr]]="!mobileMenuOpen()"
@@ -32,12 +33,13 @@
             <a
               [routerLink]="['/tags', tag.tagId]"
               (click)="mobileMenuOpen.set(false)"
-              class="flex items-center justify-between px-4 py-2.5 text-sm
-                     border-b border-dark-300 last:border-b-0 transition-colors duration-150"
+              class="flex items-center justify-between px-4 py-2.5 text-sm border-b border-dark-300 last:border-b-0 transition-colors duration-150"
               [ngClass]="tag.active ? 'text-primary-500 font-medium' : 'hover:bg-dark-300'"
             >
               <span># {{ tag.name }}</span>
-              <span class="text-[11px] text-dark-50 bg-dark-500 px-1.5 py-0.5 rounded-full">{{ tag.amount }}</span>
+              <span class="text-[11px] text-dark-50 bg-dark-500 px-1.5 py-0.5 rounded-full">{{
+                tag.amount
+              }}</span>
             </a>
           }
         </div>
@@ -51,10 +53,10 @@
           [routerLink]="['/tags', tag.tagId]"
           class="px-2 py-1 rounded-sm text-sm"
           [ngClass]="tag.active ? 'bg-primary-500' : 'hover:text-primary-500'"
-        >{{ tag.name }} <span class="text-[10px] text-dark-50">{{ tag.amount }}</span></a>
+          >{{ tag.name }} <span class="text-[10px] text-dark-50">{{ tag.amount }}</span></a
+        >
       }
     </nav>
-
   </div>
 
   <!-- 文章列表 -->
@@ -67,7 +69,9 @@
           </div>
           <div class="flex flex-col gap-1 md:gap-2">
             <a [routerLink]="'/' + article.postUrl">
-              <h2 class="hover:text-primary-500 transition-colors ease-in-out">{{ article.title }}</h2>
+              <h2 class="hover:text-primary-500 transition-colors ease-in-out">
+                {{ article.title }}
+              </h2>
             </a>
             <nav class="flex flex-wrap items-center gap-2">
               @for (tag of article.tags; track tag.id) {
@@ -82,5 +86,4 @@
       }
     </ul>
   </div>
-
 </section>

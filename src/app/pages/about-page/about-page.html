@@ -1,11 +1,14 @@
 <h1>關於我</h1>
 <hr  class="border-dark-50"/>
 
+<!-- 內容區域 -->
 <div class="grid grid-cols-12 gap-5 mt-5">
+  <!-- logo -->
   <section class="col-span-12 md:col-span-3">
     <img src="images/logo/logo-m.png" alt="logo" class="w-40 h-40 rounded-full mb-4 mx-auto " />
     <p class="text-center">啊培培 ( ENPei )</p>
   </section>
+  <!-- 文字編輯器內容 -->
   <section class="col-span-12 md:col-span-9">
     <md-viewer [content]="mdViewerContent()" />
   </section>

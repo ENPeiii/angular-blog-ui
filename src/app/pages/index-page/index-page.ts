@@ -28,8 +28,15 @@ export class IndexPage implements OnInit {
     this.loadArticleList();
   }
 
+
+  /**
+   * 載入橫幅內容
+   *
+   * @private
+   * @memberof IndexPage
+   */
   private loadBannerContent(): void {
-    this.service.getBannerContent().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+    this.service.getBannerContent$().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (data) => {
         this.mdViewerContent.set(data.content);
       },
@@ -40,8 +47,14 @@ export class IndexPage implements OnInit {
     });
   }
 
+  /**
+   * 載入文章列表
+   *
+   * @private
+   * @memberof IndexPage
+   */
   private loadArticleList(): void {
-    this.service.getArticleList().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+    this.service.getArticleList$().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (data) => {
         this.articleList.set(data.articles);
       },

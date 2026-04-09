@@ -6,10 +6,11 @@ import { Footer } from './footer/footer';
 import { fromEvent, Subscription } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
 import { LayoutConfig } from '../core/services/layout-config';
+import { Loading } from '../shared/loading/loading';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, Header, Footer],
+  imports: [RouterOutlet, Header, Footer,Loading],
   template: `
     <app-header (height)="setHeaderHeight($event)" />
     <section
@@ -36,6 +37,10 @@ import { LayoutConfig } from '../core/services/layout-config';
     } -->
 
     <app-footer />
+    @if (layoutConfig.loading()) {
+      <loading />
+    }
+
   `,
   styles: `
     :host {

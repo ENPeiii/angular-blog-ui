@@ -21,8 +21,14 @@ export class TagsPage implements OnInit {
     this.loadTagList();
   }
 
+  /**
+   * 載入標籤列表
+   *
+   * @private
+   * @memberof TagsPage
+   */
   private loadTagList(): void {
-    this.service.getTagsList().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+    this.service.getTagsList$().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (data) => {
         this.tagsList.set(data);
       },

@@ -10,36 +10,33 @@
 <!-- 文章列表 -->
 <section>
   <ul>
-      @for (article of articleList(); track article.id) {
-        <li class="border-b border-dark-50 py-2 md:py-5 md:flex item-start gap-10">
-          <div class="text-dark-50 break-keep mb-2 md:mb-0">
-            {{ article.date | date: 'yyyy年M月d日' }}
-          </div>
-          <div class="grid grid-cols-1 gap-1 md:gap-2">
-            <a [routerLink]="article.postUrl"
-              ><h2 class="hover:text-primary-500 transition ease-in-out">{{ article.title }}</h2></a
-            >
-            <nav class="flex item-center gap-5">
-              @for (tag of article.tags; track tag.id) {
-                <a [routerLink]="[`/tags/${tag.id}`]" class="tag">{{ tag.name }}</a>
-              }
-            </nav>
-            <p class="text-dark-50 text-justify line-clamp-2">
-              {{ article.summary }}
-            </p>
-          </div>
-        </li>
-      } @empty {
-        <li>目前沒有文章...</li>
-      }
-    </ul>
+    @for (article of articleList(); track article.id) {
+      <li class="border-b border-dark-50 py-2 md:py-5 md:flex item-start gap-10">
+        <div class="text-dark-50 break-keep mb-2 md:mb-0">
+          {{ article.date | date: 'yyyy年M月d日' }}
+        </div>
+        <div class="grid grid-cols-1 gap-1 md:gap-2">
+          <a [routerLink]="article.postUrl"
+            ><h2 class="hover:text-primary-500 transition ease-in-out">{{ article.title }}</h2></a
+          >
+          <nav class="flex item-center gap-5">
+            @for (tag of article.tags; track tag.id) {
+              <a [routerLink]="[`/tags/${tag.id}`]" class="tag">{{ tag.name }}</a>
+            }
+          </nav>
+          <p class="text-dark-50 text-justify line-clamp-2">
+            {{ article.summary }}
+          </p>
+        </div>
+      </li>
+    } @empty {
+      <li>目前沒有文章...</li>
+    }
+  </ul>
   <nav class="text-right mt-5">
     <a [routerLink]="[ROUTES_CONSTANT['POSTS'].url]" class="group text-dark-50 hover:text-white"
       >See more posts
-      <span
-        ><i
-          class="fa-solid fa-arrow-right group-hover:translate-x-1 transition ease-in-out"
-        ></i></span
+      <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition ease-in-out"></i
     ></a>
   </nav>
 </section>

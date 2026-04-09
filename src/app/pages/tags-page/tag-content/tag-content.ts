@@ -38,7 +38,7 @@ export class TagContent {
     toObservable(this.tagId)
       .pipe(
         filter((id): id is string => !!id),
-        switchMap((id) => this.service.getTagArticleList(id)),
+        switchMap((id) => this.service.getTagArticleList$(id)),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
@@ -47,9 +47,15 @@ export class TagContent {
       });
   }
 
+  /**
+   * 載入標籤列表
+   *
+   * @private
+   * @memberof TagContent
+   */
   private loadTagList(): void {
     this.service
-      .getTagsList()
+      .getTagsList$()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => this.tagsList.set(data),
