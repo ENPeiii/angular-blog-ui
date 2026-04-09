@@ -29,7 +29,6 @@ export class Topics {
   }
 
   getTopicNavList(topicsId: string): Observable<TopicNavRes[]> {
-    console.log('topicsId', topicsId);
     return this.http.get<{ data: TopicNavRes[] }>('api/topicNav.json').pipe(
       map((res) => res.data),
       shareReplay(1),

@@ -46,7 +46,7 @@ export class Posts {
   getPostsList$(tab: string, page: number): Observable<PostsRes> {
     return this.http
       .get<Record<string, Record<string, PostsRes>>>('/api/postsList.json')
-      .pipe(map((res) => res[tab][String(page)]));
+      .pipe(map((res) => res[tab][String(page)]), shareReplay(1));
   }
 
   getPost$(blogId: string): Observable<Post> {

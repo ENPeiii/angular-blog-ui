@@ -13,7 +13,7 @@
         (click)="tocOpen.set(!tocOpen())"
       >
         <span>目錄</span>
-        <i class="toc-chevron shrink-0 fa-solid fa-angle-down" [class.open]="tocOpen()"></i>
+        <i class="toc-chevron shrink-0 fa-solid fa-angle-down" [class.open]="tocOpen()" aria-hidden="true"></i>
       </button>
       <ul class="toc-list" [class.open]="tocOpen()">
         @for (item of toc(); track item; let i = $index) {
@@ -65,7 +65,7 @@
       [routerLink]="[baseurl(), changePag().previous?.id]"
       class="group flex items-center gap-3 text-dark-50 hover:text-white transition-colors mr-auto md:mr-0"
     >
-      <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+      <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform" aria-hidden="true"></i>
       <div>
         <p class="text-sm">上一篇</p>
         <h4>{{ changePag().previous?.title }}</h4>
@@ -84,7 +84,7 @@
         <p class="text-sm">下一篇</p>
         <h4>{{ changePag().next?.title }}</h4>
       </div>
-      <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+      <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
     </a>
   }
 </section>

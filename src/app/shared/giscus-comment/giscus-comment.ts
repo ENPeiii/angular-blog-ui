@@ -1,47 +1,47 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, ElementRef, inject, Renderer2, viewChild } from '@angular/core';
 
 @Component({
   selector: 'giscus-comment',
   imports: [],
-  template: `
-    <div #giscusContainer></div>
-  `,
+  template: `<div #giscusContainer></div>`,
   styles: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GiscusComment implements OnInit {
- // 取得 Template 中的容器引用
-  @ViewChild('giscusContainer', { static: true }) giscusContainer!: ElementRef;
+export class GiscusComment {
+  private readonly giscusContainer = viewChild<ElementRef>('giscusContainer');
+  private readonly renderer = inject(Renderer2);
 
-  constructor(private renderer: Renderer2) {}
+  constructor() {
+    afterNextRender(() => {
+      const container = this.giscusContainer()?.nativeElement;
+      if (!container) return;
 
-  ngOnInit(): void{
-    // 1. 建立 script 標籤
-    const scriptEl = this.renderer.createElement('script');
+      // 防止元件重建時重複注入 script
+      if (container.querySelector('script[src*="giscus.app"]')) return;
 
-    // 2. 將你提供的 script 參數轉換為屬性
-    const attributes = {
-      src: 'https://giscus.app/client.js',
-      'data-repo': 'ENPeiii/angular-blog-ui',
-      'data-repo-id': 'R_kgDOPIObZA',
-      'data-category': 'General',
-      'data-category-id': 'DIC_kwDOPIObZM4C6WZn',
-      'data-mapping': 'title',
-      'data-strict': '0',
-      'data-reactions-enabled': '1',
-      'data-emit-metadata': '0',
-      'data-input-position': 'bottom',
-      'data-theme': 'noborder_gray',
-      'data-lang': 'zh-TW',
-      'crossorigin': 'anonymous',
-      'async': ''
-    };
+      const scriptEl = this.renderer.createElement('script');
+      const attributes: Record<string, string> = {
+        src: 'https://giscus.app/client.js',
+        'data-repo': 'ENPeiii/angular-blog-ui',
+        'data-repo-id': 'R_kgDOPIObZA',
+        'data-category': 'General',
+        'data-category-id': 'DIC_kwDOPIObZM4C6WZn',
+        'data-mapping': 'title',
+        'data-strict': '0',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'bottom',
+        'data-theme': 'noborder_gray',
+        'data-lang': 'zh-TW',
+        crossorigin: 'anonymous',
+        async: '',
+      };
 
-    // 3. 迴圈設定屬性
-    Object.entries(attributes).forEach(([key, value]) => {
-      this.renderer.setAttribute(scriptEl, key, value);
+      Object.entries(attributes).forEach(([key, value]) => {
+        this.renderer.setAttribute(scriptEl, key, value);
+      });
+
+      this.renderer.appendChild(container, scriptEl);
     });
-
-    // 4. 將 script 插入到指定的容器中
-    this.renderer.appendChild(this.giscusContainer.nativeElement, scriptEl);
   }
 }

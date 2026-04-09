@@ -10,10 +10,12 @@
         class="flex w-full items-center justify-between px-4 py-2.5 rounded-md
                bg-dark-400 border border-dark-300 hover:border-primary-500 transition-colors duration-200"
         (click)="mobileMenuOpen.set(!mobileMenuOpen())"
+        [attr.aria-expanded]="mobileMenuOpen()"
+        aria-label="選擇標籤分類"
       >
         <span class="text-sm font-medium text-primary-500"># {{ activeTagName() }}</span>
         <i class="fa-solid fa-chevron-down text-dark-50 text-xs transition-transform duration-300"
-          [class.-rotate-180]="mobileMenuOpen()"></i>
+          [class.-rotate-180]="mobileMenuOpen()" aria-hidden="true"></i>
       </button>
 
       <!-- 下拉選單（absolute，不推擠內容） -->

@@ -1,4 +1,18 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, ElementRef, effect, input, OnDestroy, ViewChild, Injector, inject, runInInjectionContext } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  inject,
+  Injector,
+  input,
+  OnDestroy,
+  runInInjectionContext,
+  viewChild,
+} from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { debounceTime } from 'rxjs';
 import { loadTuiViewer } from '../tui-editor.loader';
 
 @Component({
@@ -9,38 +23,43 @@ import { loadTuiViewer } from '../tui-editor.loader';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MdViewer implements OnDestroy {
-  @ViewChild('viewerElement') viewerElement!: ElementRef;
+  private readonly viewerElement = viewChild<ElementRef>('viewerElement');
   content = input<string>('');
-  private injector = inject(Injector);
+  private readonly injector = inject(Injector);
+  private readonly destroyRef = inject(DestroyRef);
   private viewerInstance: { destroy(): void } | null = null;
 
   constructor() {
     afterNextRender(async () => {
       const { Viewer, codeSyntaxHighlight, tableMergedCell, Prism } = await loadTuiViewer();
 
-      runInInjectionContext(this.injector, () => {
-        effect(() => {
-          const contentValue = this.content();
-          const container = this.viewerElement.nativeElement;
+      // 將 signal 轉為 Observable，加入 debounce 避免內容快速切換時重複重建
+      const content$ = runInInjectionContext(this.injector, () =>
+        toObservable(this.content).pipe(debounceTime(50)),
+      );
 
-          // 銷毀舊實例，防止記憶體洩漏
-          if (this.viewerInstance) {
-            this.viewerInstance.destroy();
-            this.viewerInstance = null;
-          }
+      content$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((contentValue) => {
+        const container = this.viewerElement()?.nativeElement;
+        if (!container) return;
 
-          container.innerHTML = '';
+        // 銷毀舊實例，防止記憶體洩漏
+        if (this.viewerInstance) {
+          this.viewerInstance.destroy();
+          this.viewerInstance = null;
+        }
 
-          this.viewerInstance = new Viewer({
-            el: container,
-            initialValue: contentValue,
-            plugins: [[codeSyntaxHighlight, { highlighter: Prism }], [tableMergedCell]],
-            theme: 'dark',
-          });
+        container.innerHTML = '';
 
-          setTimeout(() => {
-            Prism.highlightAll();
-          }, 100);
+        this.viewerInstance = new Viewer({
+          el: container,
+          initialValue: contentValue,
+          plugins: [[codeSyntaxHighlight, { highlighter: Prism }], [tableMergedCell]],
+          theme: 'dark',
+        });
+
+        // 縮小 highlight 範圍至 container，避免掃描整份 document
+        queueMicrotask(() => {
+          Prism.highlightAllUnder(container);
         });
       });
     });

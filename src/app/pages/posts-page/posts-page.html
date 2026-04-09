@@ -41,15 +41,16 @@
   </ul>
   <div class="flex justify-end gap-4 mt-5">
     @if (postsRes()?.hasPrevious) {
-      <button (click)="changePage(-1)" class="group">
-        <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition ease-in mr-2"></i
+      <button type="button" (click)="changePage(-1)" class="group">
+        <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition ease-in mr-2" aria-hidden="true"></i
         >Previous
       </button>
     }
     @if (postsRes()?.hasNext) {
-      <button (click)="changePage(1)" class="group">
+      <button type="button" (click)="changePage(1)" class="group">
         Next<i
           class="fa-solid fa-arrow-right group-hover:translate-x-1 transition ease-in ml-2"
+          aria-hidden="true"
         ></i>
       </button>
     }

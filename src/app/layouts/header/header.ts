@@ -13,6 +13,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ROUTES_CONSTANT } from '../../core/constants/routes-constant';
 import { MatMenuModule } from '@angular/material/menu';
 import { Search } from '../../shared/search/search';
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-header',
   imports: [RouterLink, RouterLinkActive, CommonModule, MatMenuModule, Search],
@@ -27,7 +28,7 @@ import { Search } from '../../shared/search/search';
           <img
             class="w-8 border bg-white rounded-full p-1 mr-1 shake wait-0"
             src="images/logo/logo-s.png"
-            alt="logo"
+            alt="ENPei Blog logo"
           />
           <!-- 動態字母 -->
           @for (word of title().split(' '); track word) {
@@ -45,9 +46,9 @@ import { Search } from '../../shared/search/search';
 
           <div class="flex items-center space-x-4">
             <app-search
-              appId="V30V8P3XQG"
-              apiKey="1c7ca3ac2555f470e33b5caa7e580bb3"
-              indexName="blog-post"
+              [appId]="algolia.appId"
+              [apiKey]="algolia.apiKey"
+              [indexName]="algolia.indexName"
             />
             <!-- GitHub -->
             <a
@@ -130,6 +131,7 @@ export class Header {
   height = output<number>();
   title = signal(APP_TITLE);
   ROUTES_CONSTANT = ROUTES_CONSTANT;
+  readonly algolia = environment.algolia;
 
   ngAfterViewInit() {
     this.height.emit(this.headerEl().nativeElement.offsetHeight);
