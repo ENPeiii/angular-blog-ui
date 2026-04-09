@@ -37,6 +37,7 @@
               "node_modules/@toast-ui/editor-plugin-table-merged-cell/dist/toastui-editor-plugin-table-merged-cell.css",
               "node_modules/prism-themes/themes/prism-holi-theme.css",
               "node_modules/prismjs/plugins/toolbar/prism-toolbar.css",
+              "node_modules/@docsearch/css/dist/style.css",
               "src/styles/styles.scss"
             ],
             "server": "src/main.server.ts",

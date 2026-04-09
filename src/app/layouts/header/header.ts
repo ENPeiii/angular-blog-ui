@@ -1,12 +1,21 @@
-import { ChangeDetectionStrategy, Component, ElementRef, inject, output, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { APP_TITLE } from '../../core/constants/base-constant';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ROUTES_CONSTANT } from '../../core/constants/routes-constant';
 import { MatMenuModule } from '@angular/material/menu';
+import { Search } from '../../shared/search/search';
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, CommonModule, MatMenuModule],
+  imports: [RouterLink, RouterLinkActive, CommonModule, MatMenuModule, Search],
   template: `
     <header class="fixed w-full top-0 left-0 z-50" #header>
       <section class="max-w-[1440px] mx-auto p-4 flex items-center justify-between bg-dark-500 ">
@@ -35,10 +44,11 @@ import { MatMenuModule } from '@angular/material/menu';
           </div>
 
           <div class="flex items-center space-x-4">
-            <!-- Search -->
-            <button class="text-white hover:text-primary-500">
-              <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
+            <app-search
+              appId="V30V8P3XQG"
+              apiKey="1c7ca3ac2555f470e33b5caa7e580bb3"
+              indexName="blog-post"
+            />
             <!-- GitHub -->
             <a
               href="https://github.com/ENPeiii"
