@@ -49,7 +49,12 @@
               "@toast-ui/editor",
               "@toast-ui/editor-plugin-code-syntax-highlight",
               "@toast-ui/editor-plugin-table-merged-cell",
-              "prismjs"
+              "prismjs",
+              "prosemirror-inputrules",
+              "prosemirror-keymap",
+              "prosemirror-model",
+              "prosemirror-state",
+              "prosemirror-view"
             ]
           },
           "configurations": {
@@ -57,8 +62,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "800kB",
+                  "maximumError": "1.5MB"
                 },
                 {
                   "type": "anyComponentStyle",
