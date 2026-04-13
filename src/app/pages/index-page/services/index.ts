@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, shareReplay } from 'rxjs';
+import { map, Observable, shareReplay } from 'rxjs';
 
-
-export interface IndexArticle{
+export interface IndexArticle {
   id: number;
   title: string;
   date: string;
@@ -12,9 +11,8 @@ export interface IndexArticle{
   postUrl: string;
 }
 
-
 /** 前台公開 banner 物件（不含後台管理欄位） */
-export interface PublicBanner{
+export interface PublicBanner {
   /** 唯一識別碼（UUID，由後端自動產生） @example "a1b2c3d4-e5f6-7890-abcd-ef1234567890" */
   id: string;
   /** banner 名稱 @example "logo+文字" */
@@ -27,13 +25,11 @@ export interface PublicBanner{
   content?: string;
 }
 
-
 @Injectable({
   providedIn: 'root',
 })
 export class Index {
   constructor(private http: HttpClient) {}
-
 
   /**
    * 載入橫幅內容
@@ -42,9 +38,11 @@ export class Index {
    * @memberof Index
    */
   getBannerContent$(): Observable<PublicBanner> {
-    return this.http.get<PublicBanner>('http://localhost:3000/api/public/banner').pipe(shareReplay(1));
+    return this.http.get<{ data: PublicBanner }>('http://localhost:3000/api/public/banner').pipe(
+      map((res) => res.data),
+      shareReplay(1),
+    );
   }
-
 
   /**
    * 載入文章列表
