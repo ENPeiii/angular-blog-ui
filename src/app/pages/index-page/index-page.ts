@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MdViewer } from '../../shared/tui-editor/md-viewer/md-viewer';
-import { Index, IndexArticle } from './services';
+import { Index, IndexArticle, PublicBanner } from './services';
 import { DatePipe } from '@angular/common';
 import { ROUTES_CONSTANT } from '../../core/constants/routes-constant';
 import { RouterLink } from '@angular/router';
@@ -14,7 +14,10 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IndexPage implements OnInit {
-  mdViewerContent = signal<string>('');
+
+  banner = signal<PublicBanner | null>(null);
+  bannerContent = computed(()=> this.banner()?.content || '');
+
   articleList = signal<IndexArticle[]>([]);
 
   ROUTES_CONSTANT = ROUTES_CONSTANT;
@@ -38,11 +41,11 @@ export class IndexPage implements OnInit {
   private loadBannerContent(): void {
     this.service.getBannerContent$().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (data) => {
-        this.mdViewerContent.set(data.content);
+        this.banner.set(data);
       },
       error: (error) => {
         console.error('載入橫幅內容失敗:', error);
-        this.mdViewerContent.set('# 橫幅\n加載內容失敗，請稍後重試。');
+        this.banner.set(null);
       },
     });
   }
