@@ -7,10 +7,11 @@ import { fromEvent, Subscription } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
 import { LayoutConfig } from '../core/services/layout-config';
 import { Loading } from '../shared/loading/loading';
+import { AppError } from '../shared/error/error';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, Header, Footer,Loading],
+  imports: [RouterOutlet, Header, Footer, Loading, AppError],
   template: `
     <app-header (height)="setHeaderHeight($event)" />
     <section
@@ -37,9 +38,12 @@ import { Loading } from '../shared/loading/loading';
     } -->
 
     <app-footer />
+
     @if (layoutConfig.loading()) {
       <loading />
     }
+
+    <app-error />
 
   `,
   styles: `

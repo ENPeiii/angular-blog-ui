@@ -1,11 +1,18 @@
 <!-- banner -->
 <section class="grid grid-cols-12 gap-5 mt-5">
-  <div class="col-span-12 md:col-span-9">
-    <md-viewer [content]="bannerContent()" />
-  </div>
-  <div class="col-span-12 md:col-span-3">
-    <img [src]="banner()?.img" alt="logo" class="w-40 h-40 rounded-full mb-4 mx-auto" />
-  </div>
+  @if(banner()?.type==='imgText'){
+    <div class="col-span-12 md:col-span-9">
+      <md-viewer [content]="bannerContent()" />
+    </div>
+    <div class="col-span-12 md:col-span-3">
+      <img [src]="banner()?.img" alt="Main visual" class="w-40 h-40 rounded-full mb-4 mx-auto" />
+    </div>
+  }@else {
+    <div class="col-span-12 mb-4">
+      <img [src]="banner()?.img" alt="Main visual" class="mx-auto" />
+    </div>
+  }
+  
 </section>
 <!-- 文章列表 -->
 <section>

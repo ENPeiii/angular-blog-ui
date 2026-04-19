@@ -1,5 +1,4 @@
-import { Loading } from './../../shared/loading/loading';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class LayoutConfig {
@@ -7,6 +6,16 @@ export class LayoutConfig {
   maxW = signal('1024px');
   /** Header 高度（px），由 Layout 元件在 ngAfterViewInit 寫入。 */
   headerHeight = signal(0);
-  /** 控制全局 loading 狀態 */
-  loading = signal(false);
+
+  private readonly _loadingCount = signal(0);
+  /** 當任一 resource 或流程正在載入時為 true */
+  readonly loading = computed(() => this._loadingCount() > 0);
+
+  startLoading(): void {
+    this._loadingCount.update((n) => n + 1);
+  }
+
+  stopLoading(): void {
+    this._loadingCount.update((n) => Math.max(0, n - 1));
+  }
 }

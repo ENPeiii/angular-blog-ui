@@ -1,6 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { map, Observable, shareReplay } from 'rxjs';
+import { httpResource, HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable, shareReplay } from 'rxjs';
+import { ApiConfiguration } from '../../../api/api-configuration';
+import { getPublicBanner } from '../../../api/fn/public-banner/get-public-banner';
+import { ApiResponseBannerOrUndefined } from '../../../api/models/api-response-banner-or-undefined';
 
 export interface IndexArticle {
   id: number;
@@ -11,45 +14,19 @@ export interface IndexArticle {
   postUrl: string;
 }
 
-/** 前台公開 banner 物件（不含後台管理欄位） */
-export interface PublicBanner {
-  /** 唯一識別碼（UUID，由後端自動產生） @example "a1b2c3d4-e5f6-7890-abcd-ef1234567890" */
-  id: string;
-  /** banner 名稱 @example "logo+文字" */
-  title: string;
-  /** banner 類型 @example "圖文|圖" */
-  type: string;
-  /** 圖片網址 */
-  img: string;
-  /** 內容 */
-  content?: string;
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export class Index {
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
+  private readonly apiConfig = inject(ApiConfiguration);
 
-  /**
-   * 載入橫幅內容
-   *
-   * @return {*}  {Observable<{ content: string }>}
-   * @memberof Index
-   */
-  getBannerContent$(): Observable<PublicBanner> {
-    return this.http.get<{ data: PublicBanner }>('http://localhost:3000/api/public/banner').pipe(
-      map((res) => res.data),
-      shareReplay(1),
+  getBannerContent$() {
+    return httpResource<ApiResponseBannerOrUndefined>(
+      () => `${this.apiConfig.rootUrl}${getPublicBanner.PATH}`,
     );
   }
 
-  /**
-   * 載入文章列表
-   *
-   * @return {*}  {Observable<{ articles: IndexArticle[] }>}
-   * @memberof Index
-   */
   getArticleList$(): Observable<{ articles: IndexArticle[] }> {
     return this.http.get<{ articles: IndexArticle[] }>('api/index.json').pipe(shareReplay(1));
   }
