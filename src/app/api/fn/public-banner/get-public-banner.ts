@@ -7,12 +7,12 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ApiResponseBannerOrUndefined } from '../../models/api-response-banner-or-undefined';
+import { ApiResponsePublicBannerOrUndefined } from '../../models/api-response-public-banner-or-undefined';
 
 export interface GetPublicBanner$Params {
 }
 
-export function getPublicBanner(http: HttpClient, rootUrl: string, params?: GetPublicBanner$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponseBannerOrUndefined>> {
+export function getPublicBanner(http: HttpClient, rootUrl: string, params?: GetPublicBanner$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponsePublicBannerOrUndefined>> {
   const rb = new RequestBuilder(rootUrl, getPublicBanner.PATH, 'get');
   if (params) {
   }
@@ -22,7 +22,7 @@ export function getPublicBanner(http: HttpClient, rootUrl: string, params?: GetP
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<ApiResponseBannerOrUndefined>;
+      return r as StrictHttpResponse<ApiResponsePublicBannerOrUndefined>;
     })
   );
 }

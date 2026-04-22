@@ -9,9 +9,14 @@ export interface UpdateBannerDto {
   content?: string;
 
   /**
+   * 圖片替代文字
+   */
+  imgAlt?: string;
+
+  /**
    * 圖片網址
    */
-  img?: string;
+  imgUrl?: string;
 
   /**
    * 是否啟用

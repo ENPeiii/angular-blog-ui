@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 import { ApiConfiguration } from '../../../api/api-configuration';
 import { getPublicBanner } from '../../../api/fn/public-banner/get-public-banner';
-import { ApiResponseBannerOrUndefined } from '../../../api/models/api-response-banner-or-undefined';
+import { ApiResponsePublicBannerOrUndefined } from '../../../api/models';
 
 export interface IndexArticle {
   id: number;
@@ -22,7 +22,7 @@ export class Index {
   private readonly apiConfig = inject(ApiConfiguration);
 
   getBannerContent$() {
-    return httpResource<ApiResponseBannerOrUndefined>(
+    return httpResource<ApiResponsePublicBannerOrUndefined>(
       () => `${this.apiConfig.rootUrl}${getPublicBanner.PATH}`,
     );
   }

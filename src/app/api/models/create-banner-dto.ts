@@ -10,9 +10,14 @@ export interface CreateBannerDto {
   content?: string;
 
   /**
+   * 圖片替代文字
+   */
+  imgAlt: string;
+
+  /**
    * 圖片網址
    */
-  img: string;
+  imgUrl: string;
 
   /**
    * banner 名稱

@@ -5,11 +5,11 @@
       <md-viewer [content]="bannerContent()" />
     </div>
     <div class="col-span-12 md:col-span-3">
-      <img [src]="banner()?.img" alt="Main visual" class="w-40 h-40 rounded-full mb-4 mx-auto" />
+      <img [src]="banner()?.imgUrl" [alt]="banner()?.imgAlt" class="mb-4 mx-auto" [class.logo]="banner()?.imgAlt === 'logo'" />
     </div>
   }@else {
     <div class="col-span-12 mb-4">
-      <img [src]="banner()?.img" alt="Main visual" class="mx-auto" />
+      <img [src]="banner()?.imgUrl" [alt]="banner()?.imgAlt" class="mx-auto" />
     </div>
   }
   
