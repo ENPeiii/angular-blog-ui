@@ -30,8 +30,13 @@ export class MdViewer implements OnDestroy {
   private viewerInstance: { destroy(): void } | null = null;
 
   constructor() {
+    let destroyed = false;
+    this.destroyRef.onDestroy(() => { destroyed = true; });
+
     afterNextRender(async () => {
+      if (destroyed) return;
       const { Viewer, codeSyntaxHighlight, tableMergedCell, Prism } = await loadTuiViewer();
+      if (destroyed) return;
 
       // 將 signal 轉為 Observable，加入 debounce 避免內容快速切換時重複重建
       const content$ = runInInjectionContext(this.injector, () =>

@@ -8,10 +8,6 @@
 @use 'components/_link';
 @use 'components/_docsearch';
 
-a,
-button {
-  @apply transition ease-in-out cursor-pointer;
-}
 @theme {
   @each $key, $value in color.$primary {
     --color-primary-#{$key}: #{$value};
@@ -39,6 +35,12 @@ body {
     --color-dark-#{$key}: #{$value};
   }
 }
+
+a,
+button {
+  @apply transition ease-in-out cursor-pointer;
+}
+
 h1 {
   @apply text-xl md:text-2xl font-bold tracking-wider;
 }
