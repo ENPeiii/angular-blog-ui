@@ -4,9 +4,9 @@
 <!-- 文章分類列表 -->
 <section class="py-5">
   <nav class="grid grid-cols-3 md:grid-cols-4 gap-5 text-center">
-    @for (topics of topicsList(); track topics.topicsId) {
+    @for (topics of topicsList(); track topics.id) {
       <a
-        [routerLink]="['/topics', topics.topicsId]"
+        [routerLink]="['/topics', topics.id]"
         class="border border-dark-50 px-2 py-5 text-base md:text-lg rounded-xl topics-card"
         >{{ topics.name }}</a
       >

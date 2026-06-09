@@ -1,58 +1,70 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { map, Observable, shareReplay } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { filter, map, Observable } from 'rxjs';
+import { ApiConfiguration } from '../../../api/api-configuration';
+import { getTopics } from '../../../api/fn/public-topics/get-topics';
+import { getTopic } from '../../../api/fn/public-topics/get-topic';
+import { getTopicNav } from '../../../api/fn/public-topics/get-topic-nav';
+import { getPost } from '../../../api/fn/public-posts/get-post';
 import { Post } from '../../../shared/post/post';
 
-export interface TopicsList {
-  name: string;
-  topicsId: string;
-}
-
-export interface TopicNavRes {
-  id: string;
-  name: string;
-  items?: TopicNavRes[]; // 遞迴定義
-}
+export type { PublicTopicSummary } from '../../../api/models/public-topic-summary';
+export type { TopicNavSection } from '../../../api/models/topic-nav-section';
 
 @Injectable()
 export class Topics {
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
+  private readonly config = inject(ApiConfiguration);
 
   /**
    * 取得主題列表
-   *
-   * @return {*}  {Observable<TopicsList[]>}
-   * @memberof Topics
    */
-  getTopicsList$(): Observable<TopicsList[]> {
-    return this.http.get<{ data: TopicsList[] }>('api/topicsList.json').pipe(
-      map((res) => res.data),
-      shareReplay(1),
+  getTopicsList$() {
+    return getTopics(this.http, this.config.rootUrl, { pageSize: 100 }).pipe(
+      filter((r) => r.ok),
+      map((r) => r.body!.data),
     );
   }
 
   /**
-   * 取得主題選單
-   *
-   * @param {string} topicsId
-   * @return {*}  {Observable<TopicNavRes[]>}
-   * @memberof Topics
+   * 取得單一主題（含說明）
    */
-  getTopicNavList$(topicsId: string): Observable<TopicNavRes[]> {
-    return this.http.get<{ data: TopicNavRes[] }>('api/topicNav.json').pipe(
-      map((res) => res.data),
-      shareReplay(1),
+  getTopic$(topicId: string) {
+    return getTopic(this.http, this.config.rootUrl, { id: topicId }).pipe(
+      filter((r) => r.ok),
+      map((r) => r.body!.data),
     );
   }
 
   /**
-   * 取得文章內容
-   *
-   * @param {string} articleId
-   * @return {*}  {Observable<Post>}
-   * @memberof Topics
+   * 取得主題導航列表
+   */
+  getTopicNavList$(topicId: string) {
+    return getTopicNav(this.http, this.config.rootUrl, { id: topicId }).pipe(
+      filter((r) => r.ok),
+      map((r) => r.body!.data),
+    );
+  }
+
+  /**
+   * 取得文章內容，並映射為 PostComponent 所需的 Post 介面
    */
   getPost$(articleId: string): Observable<Post> {
-    return this.http.get<{ data: Post }>('/api/post.json').pipe(map((res) => res.data));
+    return getPost(this.http, this.config.rootUrl, { id: articleId }).pipe(
+      filter((r) => r.ok),
+      map((r) => {
+        const p = r.body!.data;
+        return {
+          id: p.id,
+          title: p.title,
+          date: p.createdAt,
+          content: p.content,
+          categoryId: p.categories,
+          topicId: p.topicId,
+          tags: p.tags.map((t) => ({ tagId: t.id, name: t.name })),
+          changePag: {},
+        } as Post;
+      }),
+    );
   }
 }

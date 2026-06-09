@@ -18,7 +18,7 @@ import { AppError } from '../shared/error/error';
       class="flex-1 w-full mx-auto px-4 md:px-8"
       [style.maxWidth]="layoutConfig.maxW()"
       [style.--blog-max-w]="layoutConfig.maxW()"
-      [style.marginTop.px]="headerHeight()"
+      [style.marginTop.px]="headerHeight() || 72"
     >
       <router-outlet />
     </section>

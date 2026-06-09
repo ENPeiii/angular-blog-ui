@@ -1,8 +1,8 @@
 <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
-  <!-- 側邊導航 spacer（維持 grid 佔位） -->
+  <!-- Sidebar spacer -->
   <aside #sidebarSpacer class="hidden md:block md:col-span-3"></aside>
 
-  <!-- Fixed 側邊導航（定位由 JS 動態計算） -->
+  <!-- Fixed sidebar -->
   <div
     class="hidden md:block fixed bg-dark-400 p-4 rounded-lg overflow-y-auto sidebar-scroll"
     [style.top.px]="sidebarTop()"
@@ -11,19 +11,24 @@
     [style.maxHeight]="'calc(100vh - ' + sidebarTop() + 'px)'"
   >
     <nav class="flex flex-col gap-2">
-      @for (nav of topicNav(); track nav.id) {
+      <!-- Overview link -->
+      <a
+        [routerLink]="['/topics', topicsId()]"
+        class="block px-2 py-1 rounded-sm text-sm font-medium mb-1"
+        [ngClass]="!articleId() ? 'bg-primary-500' : 'hover:text-primary-500'"
+      >Overview</a>
+      @for (section of topicNav(); track section.id) {
         <div>
-          <h3 class="font-medium">{{ nav.name }}</h3>
-          @if (nav.items) {
+          <h3 class="font-medium text-sm px-2">{{ section.name }}</h3>
+          @if (section.items.length > 0) {
             <ul class="ml-4 mt-1 flex flex-col gap-1">
-              @for (item of nav.items; track item.id) {
+              @for (item of section.items; track item.id) {
                 <li>
                   <a
-                    [routerLink]="item.id === 'readme' ? ['/topics', topicsId()] : ['/topics', topicsId(), item.id]"
+                    [routerLink]="['/topics', topicsId(), item.id]"
                     class="block px-2 py-1 rounded-sm text-sm"
-                    [ngClass]="item.id === (articleId() || 'readme') ? 'bg-primary-500' : 'hover:text-primary-500'"
-                    >{{ item.name }}</a
-                  >
+                    [ngClass]="item.id === articleId() ? 'bg-primary-500' : 'hover:text-primary-500'"
+                  >{{ item.name }}</a>
                 </li>
               }
             </ul>
@@ -33,9 +38,44 @@
     </nav>
   </div>
 
-  <!-- 文章內容 -->
+  <!-- Main content -->
   <section class="col-span-12 md:col-span-9">
-    <app-post [post]="post()" />
-    <giscus-comment />
+    @if (isOverview()) {
+      <!-- Overview page -->
+      <div class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold mb-4">{{ topicName() }}</h1>
+          @if (topicDescription()) {
+            <md-viewer [content]="topicDescription()" />
+          }
+        </div>
+        <div>
+        @for (section of topicNav(); track section.id) {
+          <div class="mb-6">
+            <h2 class="text-lg font-semibold mb-3 pb-2 border-dark-50">{{ section.name }}</h2>
+            <ul class="space-y-2">
+              @for (item of section.items; track item.id) {
+                <li>
+                  <a
+                    [routerLink]="['/topics', topicsId(), item.id]"
+                    class="flex items-center gap-2 py-1 hover:text-primary-500 transition-colors"
+                  >
+                    <span class="text-dark-200 text-sm">→</span>
+                    <span>{{ item.name }}</span>
+                  </a>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+        @if (topicNav().length === 0) {
+          <p class="text-dark-200">此主題尚無文章。</p>
+        }
+        </div>
+      </div>
+    } @else {
+      <app-post [post]="post()" />
+      <giscus-comment />
+    }
   </section>
 </div>

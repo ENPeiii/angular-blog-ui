@@ -2,6 +2,7 @@ import {
   afterNextRender,
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   ElementRef,
   inject,
@@ -10,29 +11,21 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { TopicNavRes, Topics } from '../services/topics';
+import { TopicNavSection, Topics } from '../services/topics';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Post, PostComponent } from '../../../shared/post/post';
 import { GiscusComment } from '../../../shared/giscus-comment/giscus-comment';
+import { MdViewer } from '../../../shared/tui-editor/md-viewer/md-viewer';
 import { Title } from '@angular/platform-browser';
-import { fromEvent, switchMap } from 'rxjs';
+import { APP_TITLE } from '../../../core/constants/base-constant';
+import { filter, fromEvent, switchMap } from 'rxjs';
 import { LayoutConfig } from '../../../core/services/layout-config';
-
-export interface TopicNavItem extends TopicNavRes {
-  isActive: boolean;
-}
-
-interface TopicNav {
-  id: string;
-  name: string;
-  items?: TopicNavItem[];
-}
 
 @Component({
   selector: 'app-topic-content',
-  imports: [RouterLink, NgClass, PostComponent, GiscusComment],
+  imports: [RouterLink, NgClass, PostComponent, GiscusComment, MdViewer],
   templateUrl: './topic-content.html',
   styleUrl: './topic-content.scss',
   providers: [Topics],
@@ -41,7 +34,10 @@ interface TopicNav {
 export class TopicContent implements OnInit {
   topicsId = input<string>();
   articleId = input<string>();
-  topicNav = signal<TopicNav[]>([]);
+  topicNav = signal<TopicNavSection[]>([]);
+  topicName = signal<string>('');
+  topicDescription = signal<string>('');
+  isOverview = computed(() => !this.articleId());
 
   post = signal<Post | null>(null);
   sidebarLeft = signal(0);
@@ -52,19 +48,21 @@ export class TopicContent implements OnInit {
   private readonly layoutConfig = inject(LayoutConfig);
   private readonly sidebarSpacer = viewChild<ElementRef>('sidebarSpacer');
   private readonly destroyRef = inject(DestroyRef);
+  private readonly service = inject(Topics);
 
-  constructor(private service: Topics) {
+  constructor() {
     // switchMap 確保 articleId 變更時自動取消前一個 HTTP 請求，避免訂閱累積與資料競爭
     toObservable(this.articleId)
       .pipe(
-        switchMap((id) => this.service.getPost$(id || 'readme')),
+        filter((id): id is string => !!id),
+        switchMap((id) => this.service.getPost$(id)),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: (res) => {
           this.post.set(res);
           if (res?.title && this.articleId()) {
-            this.titleService.setTitle(`${res.title}\u2002|\u2002${this.topicsId()}`);
+            this.titleService.setTitle(`${res.title} | ${this.topicName() || this.topicsId()}`);
           }
         },
         error: (error) => {
@@ -82,8 +80,21 @@ export class TopicContent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.topicsId()) {
-      this.getTopicNavList(this.topicsId()!);
+    const id = this.topicsId();
+    if (id) {
+      this.getTopicNavList(id);
+      this.service.getTopic$(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+        next: (topic) => {
+          this.topicName.set(topic.name);
+          this.topicDescription.set(topic.description ?? '');
+          if (this.isOverview()) {
+            this.titleService.setTitle(`${topic.name} - ${APP_TITLE}`);
+          }
+        },
+        error: () => {
+          this.topicName.set(id);
+        },
+      });
     }
   }
 
@@ -105,7 +116,7 @@ export class TopicContent implements OnInit {
   }
 
   /**
-   * 根據 `topicsId` 從服務獲取主題導航列表，並更新 `topicNav` 信號。成功時將導航項目標記為活動狀態，失敗時在控制台輸出錯誤訊息。
+   * 根據 `topicsId` 從服務獲取主題導航列表，並更新 `topicNav` 信號。
    *
    * @private
    * @param {string} topicsId
@@ -117,14 +128,7 @@ export class TopicContent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => {
-          const navWithActive = data.map((nav) => ({
-            ...nav,
-            items: nav.items?.map((item) => ({
-              ...item,
-              isActive: item.id === this.articleId(),
-            })),
-          }));
-          this.topicNav.set(navWithActive);
+          this.topicNav.set(data);
         },
         error: (error) => {
           console.error('Error fetching topic navigation:', error);

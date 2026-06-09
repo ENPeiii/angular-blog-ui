@@ -134,7 +134,19 @@ export class Header {
   ROUTES_CONSTANT = ROUTES_CONSTANT;
   readonly algolia = environment.algolia;
 
+  private ro?: ResizeObserver;
+
   ngAfterViewInit() {
-    this.height.emit(this.headerEl().nativeElement.offsetHeight);
+    const el = this.headerEl().nativeElement;
+    if (typeof ResizeObserver !== 'undefined') {
+      this.ro = new ResizeObserver(() => this.height.emit(el.offsetHeight));
+      this.ro.observe(el);
+    } else {
+      this.height.emit(el.offsetHeight);
+    }
+  }
+
+  ngOnDestroy() {
+    this.ro?.disconnect();
   }
 }
