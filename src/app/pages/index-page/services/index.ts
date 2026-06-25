@@ -1,12 +1,13 @@
 import { httpResource, HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, shareReplay } from 'rxjs';
+import { Observable, filter, map } from 'rxjs';
 import { ApiConfiguration } from '../../../api/api-configuration';
 import { getPublicBanner } from '../../../api/fn/public-banner/get-public-banner';
+import { getLatestPosts } from '../../../api/fn/public-posts/get-latest-posts';
 import { ApiResponsePublicBannerOrUndefined } from '../../../api/models';
 
 export interface IndexArticle {
-  id: number;
+  id: string;
   title: string;
   date: string;
   tags: { name: string; tagId: string }[];
@@ -28,6 +29,18 @@ export class Index {
   }
 
   getArticleList$(): Observable<{ articles: IndexArticle[] }> {
-    return this.http.get<{ articles: IndexArticle[] }>('api/index.json').pipe(shareReplay(1));
+    return getLatestPosts(this.http, this.apiConfig.rootUrl).pipe(
+      filter((r) => r.ok),
+      map((r) => ({
+        articles: r.body!.data.map((post) => ({
+          id: post.id,
+          title: post.title,
+          date: post.createdAt,
+          tags: post.tags.map((t) => ({ name: t.name, tagId: t.id })),
+          summary: post.content,
+          postUrl: `/blog/${post.id}`,
+        })),
+      })),
+    );
   }
 }

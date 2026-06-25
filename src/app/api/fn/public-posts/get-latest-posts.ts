@@ -7,20 +7,14 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ApiResponsePublicTopic } from '../../models/api-response-public-topic';
+import { ApiResponsePostLatestItemArray } from '../../models/api-response-post-latest-item-array';
 
-export interface GetTopic$Params {
-
-/**
- * 主題 slug
- */
-  id: string;
+export interface GetLatestPosts$Params {
 }
 
-export function getTopic(http: HttpClient, rootUrl: string, params: GetTopic$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponsePublicTopic>> {
-  const rb = new RequestBuilder(rootUrl, getTopic.PATH, 'get');
+export function getLatestPosts(http: HttpClient, rootUrl: string, params?: GetLatestPosts$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponsePostLatestItemArray>> {
+  const rb = new RequestBuilder(rootUrl, getLatestPosts.PATH, 'get');
   if (params) {
-    rb.path('id', params.id, {});
   }
 
   return http.request(
@@ -28,9 +22,9 @@ export function getTopic(http: HttpClient, rootUrl: string, params: GetTopic$Par
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<ApiResponsePublicTopic>;
+      return r as StrictHttpResponse<ApiResponsePostLatestItemArray>;
     })
   );
 }
 
-getTopic.PATH = '/public/topics/{id}';
+getLatestPosts.PATH = '/public/posts/latest';

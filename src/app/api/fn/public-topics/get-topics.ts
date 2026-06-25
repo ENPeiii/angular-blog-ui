@@ -7,22 +7,26 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { PaginatedResponsePublicTopicSummary } from '../../models/paginated-response-public-topic-summary';
+import { PaginatedResponsePublicTopic } from '../../models/paginated-response-public-topic';
 
 export interface GetTopics$Params {
+
+/**
+ * 頁碼（從 1 開始）
+ */
   page?: number;
+
+/**
+ * 每頁筆數
+ */
   pageSize?: number;
 }
 
-export function getTopics(http: HttpClient, rootUrl: string, params?: GetTopics$Params, context?: HttpContext): Observable<StrictHttpResponse<PaginatedResponsePublicTopicSummary>> {
+export function getTopics(http: HttpClient, rootUrl: string, params?: GetTopics$Params, context?: HttpContext): Observable<StrictHttpResponse<PaginatedResponsePublicTopic>> {
   const rb = new RequestBuilder(rootUrl, getTopics.PATH, 'get');
   if (params) {
-    if (params.page !== undefined) {
-      rb.query('page', params.page, {});
-    }
-    if (params.pageSize !== undefined) {
-      rb.query('pageSize', params.pageSize, {});
-    }
+    rb.query('page', params.page, {});
+    rb.query('pageSize', params.pageSize, {});
   }
 
   return http.request(
@@ -30,7 +34,7 @@ export function getTopics(http: HttpClient, rootUrl: string, params?: GetTopics$
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<PaginatedResponsePublicTopicSummary>;
+      return r as StrictHttpResponse<PaginatedResponsePublicTopic>;
     })
   );
 }

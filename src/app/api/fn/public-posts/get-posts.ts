@@ -7,14 +7,44 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ApiResponsePublicPostArray } from '../../models/api-response-public-post-array';
+import { PaginatedResponsePostListItem } from '../../models/paginated-response-post-list-item';
 
 export interface GetPosts$Params {
+
+/**
+ * 頁碼（從 1 開始）
+ */
+  page?: number;
+
+/**
+ * 每頁筆數
+ */
+  pageSize?: number;
+
+/**
+ * 文章分類（tech | life），不傳則取全部
+ */
+  categories?: string;
+
+/**
+ * 主題 slug，不傳則取全部
+ */
+  topicId?: string;
+
+/**
+ * 標籤 ID，不傳則取全部
+ */
+  tagId?: string;
 }
 
-export function getPosts(http: HttpClient, rootUrl: string, params?: GetPosts$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponsePublicPostArray>> {
+export function getPosts(http: HttpClient, rootUrl: string, params?: GetPosts$Params, context?: HttpContext): Observable<StrictHttpResponse<PaginatedResponsePostListItem>> {
   const rb = new RequestBuilder(rootUrl, getPosts.PATH, 'get');
   if (params) {
+    rb.query('page', params.page, {});
+    rb.query('pageSize', params.pageSize, {});
+    rb.query('categories', params.categories, {});
+    rb.query('topicId', params.topicId, {});
+    rb.query('tagId', params.tagId, {});
   }
 
   return http.request(
@@ -22,7 +52,7 @@ export function getPosts(http: HttpClient, rootUrl: string, params?: GetPosts$Pa
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<ApiResponsePublicPostArray>;
+      return r as StrictHttpResponse<PaginatedResponsePostListItem>;
     })
   );
 }

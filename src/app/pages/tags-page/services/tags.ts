@@ -1,14 +1,18 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { map, Observable, shareReplay } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { filter, map, Observable } from 'rxjs';
+import { ApiConfiguration } from '../../../api/api-configuration';
+import { getTags } from '../../../api/fn/public-tags/get-tags';
+import { getPosts } from '../../../api/fn/public-posts/get-posts';
+
 export interface TagsList {
   name: string;
   tagId: string;
   amount: number;
 }
 
-export interface ArticleList{
-  id: number;
+export interface ArticleList {
+  id: string;
   title: string;
   date: string;
   tags: { name: string; tagId: string }[];
@@ -16,10 +20,12 @@ export interface ArticleList{
   postUrl: string;
 }
 
+const TAG_ARTICLES_PAGE_SIZE = 100;
+
 @Injectable({ providedIn: 'root' })
 export class Tags {
-  constructor(private http: HttpClient) {}
-
+  private readonly http = inject(HttpClient);
+  private readonly apiConfig = inject(ApiConfiguration);
 
   /**
    * 取得標籤列表
@@ -28,9 +34,10 @@ export class Tags {
    * @memberof Tags
    */
   getTagsList$(): Observable<TagsList[]> {
-    return this.http
-      .get<{ data: TagsList[] }>('api/tagsList.json')
-      .pipe(map((res) => res.data), shareReplay(1));
+    return getTags(this.http, this.apiConfig.rootUrl, { pageSize: TAG_ARTICLES_PAGE_SIZE }).pipe(
+      filter((r) => r.ok),
+      map((r) => r.body!.data.map((tag) => ({ name: tag.name, tagId: tag.id, amount: tag.postCount }))),
+    );
   }
 
   /**
@@ -40,8 +47,19 @@ export class Tags {
    * @return {*}  {Observable<ArticleList[]>}
    * @memberof Tags
    */
-  getTagArticleList$(tagId:string): Observable<ArticleList[]>{
-    return this.http.get<{data:ArticleList[]}>('api/tag.json')
-    .pipe(map((res) => res.data), shareReplay(1));
+  getTagArticleList$(tagId: string): Observable<ArticleList[]> {
+    return getPosts(this.http, this.apiConfig.rootUrl, { tagId, pageSize: TAG_ARTICLES_PAGE_SIZE }).pipe(
+      filter((r) => r.ok),
+      map((r) =>
+        r.body!.data.map((post) => ({
+          id: post.id,
+          title: post.title,
+          date: post.createdAt,
+          tags: post.tags.map((t) => ({ name: t.name, tagId: t.id })),
+          summary: '',
+          postUrl: `blog/${post.id}`,
+        })),
+      ),
+    );
   }
 }

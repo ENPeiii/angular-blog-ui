@@ -7,9 +7,8 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ApiResponsePublicTopic } from '../../models/api-response-public-topic';
 
-export interface GetTopic$Params {
+export interface DeleteTopic$Params {
 
 /**
  * 主題 slug
@@ -17,20 +16,20 @@ export interface GetTopic$Params {
   id: string;
 }
 
-export function getTopic(http: HttpClient, rootUrl: string, params: GetTopic$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponsePublicTopic>> {
-  const rb = new RequestBuilder(rootUrl, getTopic.PATH, 'get');
+export function deleteTopic(http: HttpClient, rootUrl: string, params: DeleteTopic$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  const rb = new RequestBuilder(rootUrl, deleteTopic.PATH, 'delete');
   if (params) {
     rb.path('id', params.id, {});
   }
 
   return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
+    rb.build({ responseType: 'text', accept: '*/*', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<ApiResponsePublicTopic>;
+      return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
     })
   );
 }
 
-getTopic.PATH = '/public/topics/{id}';
+deleteTopic.PATH = '/admin/topics/{id}';

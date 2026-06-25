@@ -7,20 +7,23 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ApiResponsePublicTopic } from '../../models/api-response-public-topic';
+import { ApiResponseTopic } from '../../models/api-response-topic';
+import { UpdateTopicDto } from '../../models/update-topic-dto';
 
-export interface GetTopic$Params {
+export interface UpdateTopic$Params {
 
 /**
  * 主題 slug
  */
   id: string;
+      body: UpdateTopicDto
 }
 
-export function getTopic(http: HttpClient, rootUrl: string, params: GetTopic$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponsePublicTopic>> {
-  const rb = new RequestBuilder(rootUrl, getTopic.PATH, 'get');
+export function updateTopic(http: HttpClient, rootUrl: string, params: UpdateTopic$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponseTopic>> {
+  const rb = new RequestBuilder(rootUrl, updateTopic.PATH, 'put');
   if (params) {
     rb.path('id', params.id, {});
+    rb.body(params.body, 'application/json');
   }
 
   return http.request(
@@ -28,9 +31,9 @@ export function getTopic(http: HttpClient, rootUrl: string, params: GetTopic$Par
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<ApiResponsePublicTopic>;
+      return r as StrictHttpResponse<ApiResponseTopic>;
     })
   );
 }
 
-getTopic.PATH = '/public/topics/{id}';
+updateTopic.PATH = '/admin/topics/{id}';

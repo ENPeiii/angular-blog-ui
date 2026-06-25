@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Topics, PublicTopicSummary } from './services/topics';
+import { Topics, PublicTopic } from './services/topics';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopicsPage implements OnInit {
-  topicsList = signal<PublicTopicSummary[]>([]);
+  topicsList = signal<PublicTopic[]>([]);
 
   private destroyRef = inject(DestroyRef);
   private service = inject(Topics);

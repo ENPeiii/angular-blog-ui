@@ -7,14 +7,32 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ApiResponsePostModelArray } from '../../models/api-response-post-model-array';
+import { PaginatedResponsePostModel } from '../../models/paginated-response-post-model';
 
 export interface GetPosts_1$Params {
+
+/**
+ * 頁碼（從 1 開始）
+ */
+  page?: number;
+
+/**
+ * 每頁筆數
+ */
+  pageSize?: number;
+
+/**
+ * 依標籤 ID 篩選
+ */
+  tagId?: string;
 }
 
-export function getPosts_1(http: HttpClient, rootUrl: string, params?: GetPosts_1$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponsePostModelArray>> {
+export function getPosts_1(http: HttpClient, rootUrl: string, params?: GetPosts_1$Params, context?: HttpContext): Observable<StrictHttpResponse<PaginatedResponsePostModel>> {
   const rb = new RequestBuilder(rootUrl, getPosts_1.PATH, 'get');
   if (params) {
+    rb.query('page', params.page, {});
+    rb.query('pageSize', params.pageSize, {});
+    rb.query('tagId', params.tagId, {});
   }
 
   return http.request(
@@ -22,7 +40,7 @@ export function getPosts_1(http: HttpClient, rootUrl: string, params?: GetPosts_
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<ApiResponsePostModelArray>;
+      return r as StrictHttpResponse<PaginatedResponsePostModel>;
     })
   );
 }

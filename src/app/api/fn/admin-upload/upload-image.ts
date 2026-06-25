@@ -7,20 +7,18 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ApiResponsePublicTopic } from '../../models/api-response-public-topic';
+import { ApiResponseUploadImageResult } from '../../models/api-response-upload-image-result';
 
-export interface GetTopic$Params {
-
-/**
- * 主題 slug
- */
-  id: string;
+export interface UploadImage$Params {
+      body: {
+'file': Blob;
+}
 }
 
-export function getTopic(http: HttpClient, rootUrl: string, params: GetTopic$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponsePublicTopic>> {
-  const rb = new RequestBuilder(rootUrl, getTopic.PATH, 'get');
+export function uploadImage(http: HttpClient, rootUrl: string, params: UploadImage$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponseUploadImageResult>> {
+  const rb = new RequestBuilder(rootUrl, uploadImage.PATH, 'post');
   if (params) {
-    rb.path('id', params.id, {});
+    rb.body(params.body, 'multipart/form-data');
   }
 
   return http.request(
@@ -28,9 +26,9 @@ export function getTopic(http: HttpClient, rootUrl: string, params: GetTopic$Par
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<ApiResponsePublicTopic>;
+      return r as StrictHttpResponse<ApiResponseUploadImageResult>;
     })
   );
 }
 
-getTopic.PATH = '/public/topics/{id}';
+uploadImage.PATH = '/admin/upload/image';

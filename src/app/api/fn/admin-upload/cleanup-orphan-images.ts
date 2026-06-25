@@ -7,20 +7,14 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ApiResponsePublicTopic } from '../../models/api-response-public-topic';
+import { ApiResponseCleanupResult } from '../../models/api-response-cleanup-result';
 
-export interface GetTopic$Params {
-
-/**
- * 主題 slug
- */
-  id: string;
+export interface CleanupOrphanImages$Params {
 }
 
-export function getTopic(http: HttpClient, rootUrl: string, params: GetTopic$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponsePublicTopic>> {
-  const rb = new RequestBuilder(rootUrl, getTopic.PATH, 'get');
+export function cleanupOrphanImages(http: HttpClient, rootUrl: string, params?: CleanupOrphanImages$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponseCleanupResult>> {
+  const rb = new RequestBuilder(rootUrl, cleanupOrphanImages.PATH, 'post');
   if (params) {
-    rb.path('id', params.id, {});
   }
 
   return http.request(
@@ -28,9 +22,9 @@ export function getTopic(http: HttpClient, rootUrl: string, params: GetTopic$Par
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<ApiResponsePublicTopic>;
+      return r as StrictHttpResponse<ApiResponseCleanupResult>;
     })
   );
 }
 
-getTopic.PATH = '/public/topics/{id}';
+cleanupOrphanImages.PATH = '/admin/upload/cleanup';

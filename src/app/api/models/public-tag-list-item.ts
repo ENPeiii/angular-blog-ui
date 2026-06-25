@@ -3,9 +3,9 @@
 
 
 /**
- * 前台公開標籤物件（不含後台管理欄位）
+ * 前台標籤列表項目（含文章數，標籤列表頁用）
  */
-export interface PublicTag {
+export interface PublicTagListItem {
 
   /**
    * 標籤 slug（前端當作路由使用）
@@ -16,4 +16,9 @@ export interface PublicTag {
    * 標籤名稱
    */
   name: string;
+
+  /**
+   * 使用此標籤的文章數
+   */
+  postCount: number;
 }

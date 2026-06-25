@@ -8,7 +8,7 @@ import { getTopicNav } from '../../../api/fn/public-topics/get-topic-nav';
 import { getPost } from '../../../api/fn/public-posts/get-post';
 import { Post } from '../../../shared/post/post';
 
-export type { PublicTopicSummary } from '../../../api/models/public-topic-summary';
+export type { PublicTopic } from '../../../api/models/public-topic';
 export type { TopicNavSection } from '../../../api/models/topic-nav-section';
 
 @Injectable()

@@ -7,9 +7,9 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { PaginatedResponseTag } from '../../models/paginated-response-tag';
+import { PaginatedResponseTopic } from '../../models/paginated-response-topic';
 
-export interface GetTags_1$Params {
+export interface GetTopics_1$Params {
 
 /**
  * 頁碼（從 1 開始）
@@ -20,19 +20,13 @@ export interface GetTags_1$Params {
  * 每頁筆數
  */
   pageSize?: number;
-
-/**
- * 依標籤名稱模糊搜尋
- */
-  search?: string;
 }
 
-export function getTags_1(http: HttpClient, rootUrl: string, params?: GetTags_1$Params, context?: HttpContext): Observable<StrictHttpResponse<PaginatedResponseTag>> {
-  const rb = new RequestBuilder(rootUrl, getTags_1.PATH, 'get');
+export function getTopics_1(http: HttpClient, rootUrl: string, params?: GetTopics_1$Params, context?: HttpContext): Observable<StrictHttpResponse<PaginatedResponseTopic>> {
+  const rb = new RequestBuilder(rootUrl, getTopics_1.PATH, 'get');
   if (params) {
     rb.query('page', params.page, {});
     rb.query('pageSize', params.pageSize, {});
-    rb.query('search', params.search, {});
   }
 
   return http.request(
@@ -40,9 +34,9 @@ export function getTags_1(http: HttpClient, rootUrl: string, params?: GetTags_1$
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<PaginatedResponseTag>;
+      return r as StrictHttpResponse<PaginatedResponseTopic>;
     })
   );
 }
 
-getTags_1.PATH = '/admin/tags';
+getTopics_1.PATH = '/admin/topics';

@@ -3,12 +3,11 @@
 
 import { CategoriesType } from '../models/categories-type';
 import { PublicTag } from '../models/public-tag';
-import { PublicTopic } from '../models/public-topic';
 
 /**
- * 前台公開文章物件（不含 updatedAt）
+ * 首頁最新文章項目（含 tags 和截斷的 content）
  */
-export interface PublicPost {
+export interface PostLatestItem {
 
   /**
    * 文章分類
@@ -16,7 +15,7 @@ export interface PublicPost {
   categories: CategoriesType;
 
   /**
-   * 文章內文（Markdown）
+   * 文章內文前 100 字
    */
   content: string;
 
@@ -26,7 +25,7 @@ export interface PublicPost {
   createdAt: string;
 
   /**
-   * 文章唯一識別碼（UUID）
+   * 文章唯一識別碼
    */
   id: string;
 
@@ -39,14 +38,4 @@ export interface PublicPost {
    * 文章標題
    */
   title: string;
-
-  /**
-   * 所屬主題
-   */
-  topic: PublicTopic | null;
-
-  /**
-   * 所屬主題 ID
-   */
-  topicId: string | null;
 }

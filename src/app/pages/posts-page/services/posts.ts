@@ -1,56 +1,63 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, map, shareReplay } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { Observable, filter, map, of } from 'rxjs';
+import { ApiConfiguration } from '../../../api/api-configuration';
+import { getPosts } from '../../../api/fn/public-posts/get-posts';
+import { getPost } from '../../../api/fn/public-posts/get-post';
 import { Post } from '../../../shared/post/post';
 
 export interface PostsTab {
   name: string;
   value: string;
 }
+
+/** 文章分類 Tab：對應後端固定的 CategoriesType enum（tech / life），不需要打 API */
+const POSTS_TABS: PostsTab[] = [
+  { name: '全部', value: 'all' },
+  { name: '技術', value: 'tech' },
+  { name: '生活', value: 'life' },
+];
+
 export interface PostsRes {
-  tab: string;
   page: number;
   totalPages: number;
   hasNext: boolean;
   hasPrevious: boolean;
-  dateRange: string;
   articles: PostsList[];
 }
 
 export interface PostsList {
   month: string;
   posts: {
-    id: number;
+    id: string;
     title: string;
     date: string;
-    topics: string;
-    summary: string;
+    topics: string | null;
     postUrl: string;
   }[];
 }
 
+const PAGE_SIZE = 10;
 
 @Injectable({
   providedIn: 'root',
 })
 export class Posts {
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
+  private readonly apiConfig = inject(ApiConfiguration);
 
   /**
-   *  * 取得文章分類選單
+   * 取得文章分類選單（前端固定常數，不需要打 API）
    *
    * @return {*}  {Observable<PostsTab[]>}
    * @memberof Posts
    */
   getPostsTab$(): Observable<PostsTab[]> {
-    return this.http.get<{ data: PostsTab[] }>('/api/postsTab.json').pipe(
-      map((res) => res.data),
-      shareReplay(1),
-    );
+    return of(POSTS_TABS);
   }
 
   /**
-   * 取得文章列表
+   * 取得文章列表，依月份分組
    *
    * @param {string} tab
    * @param {number} page
@@ -58,9 +65,23 @@ export class Posts {
    * @memberof Posts
    */
   getPostsList$(tab: string, page: number): Observable<PostsRes> {
-    return this.http
-      .get<Record<string, Record<string, PostsRes>>>('/api/postsList.json')
-      .pipe(map((res) => res[tab][String(page)]), shareReplay(1));
+    return getPosts(this.http, this.apiConfig.rootUrl, {
+      page,
+      pageSize: PAGE_SIZE,
+      categories: tab === 'all' ? undefined : tab,
+    }).pipe(
+      filter((r) => r.ok),
+      map((r) => {
+        const { data, totalPages } = r.body!;
+        return {
+          page,
+          totalPages,
+          hasNext: page < totalPages,
+          hasPrevious: page > 1,
+          articles: groupByMonth(data),
+        };
+      }),
+    );
   }
 
   /**
@@ -71,8 +92,42 @@ export class Posts {
    * @memberof Posts
    */
   getPost$(blogId: string): Observable<Post> {
-    return this.http
-      .get<{ data: Post }>('/api/post.json')
-      .pipe(map((res) => res.data));
+    return getPost(this.http, this.apiConfig.rootUrl, { id: blogId }).pipe(
+      filter((r) => r.ok),
+      map((r) => {
+        const p = r.body!.data;
+        return {
+          id: p.id,
+          title: p.title,
+          date: p.createdAt,
+          content: p.content,
+          categoryId: p.categories,
+          topicId: p.topicId,
+          tags: p.tags.map((t) => ({ tagId: t.id, name: t.name })),
+          changePag: {},
+        } as Post;
+      }),
+    );
   }
+}
+
+function groupByMonth(
+  items: { id: string; title: string; createdAt: string; topicId: string | null }[],
+): PostsList[] {
+  const groups = new Map<string, PostsList>();
+  for (const item of items) {
+    const date = new Date(item.createdAt);
+    const month = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-01`;
+    if (!groups.has(month)) {
+      groups.set(month, { month, posts: [] });
+    }
+    groups.get(month)!.posts.push({
+      id: item.id,
+      title: item.title,
+      date: item.createdAt,
+      topics: item.topicId,
+      postUrl: `blog/${item.id}`,
+    });
+  }
+  return Array.from(groups.values());
 }

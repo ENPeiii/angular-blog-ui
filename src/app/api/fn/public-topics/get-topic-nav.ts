@@ -10,6 +10,10 @@ import { RequestBuilder } from '../../request-builder';
 import { ApiResponseTopicNavSectionArray } from '../../models/api-response-topic-nav-section-array';
 
 export interface GetTopicNav$Params {
+
+/**
+ * 主題 slug
+ */
   id: string;
 }
 

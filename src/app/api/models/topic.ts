@@ -3,9 +3,9 @@
 
 
 /**
- * 後台完整標籤物件
+ * 後台完整主題物件
  */
-export interface Tag {
+export interface Topic {
 
   /**
    * 建立時間（UTC）
@@ -13,22 +13,27 @@ export interface Tag {
   createdAt: string;
 
   /**
-   * 標籤id（前端當作路由使用）
+   * 主題簡介
+   */
+  description: string | null;
+
+  /**
+   * 主題 slug
    */
   id: string;
 
   /**
-   * 標籤名稱
+   * 主題名稱
    */
   name: string;
 
   /**
-   * 使用此標籤的文章數
+   * 此主題下的文章數
    */
   postCount: number;
 
   /**
-   * 最後更新時間（UTC），未更新過則為 null
+   * 最後更新時間（UTC）
    */
   updatedAt: string;
 }
