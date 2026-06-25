@@ -75,7 +75,9 @@
       </div>
     } @else {
       <app-post [post]="post()" />
-      <giscus-comment />
+      @if (post()) {
+        <giscus-comment />
+      }
     }
   </section>
 </div>
