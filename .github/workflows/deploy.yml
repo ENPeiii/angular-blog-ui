@@ -1,4 +1,4 @@
-name: Deploy to GCP
+name: Deploy UI to GCP
 
 on:
   workflow_run:

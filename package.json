@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:angular-blog-ui": "node dist/angular-blog-ui/server/server.mjs",
-    "gen:api": "ng-openapi-gen --input http://localhost:3000/swagger.json --output src/app/api"
+    "gen:api": "ng-openapi-gen --input https://api.enpei.com.tw/swagger.json --output src/app/api"
   },
   "prettier": {
     "printWidth": 100,

@@ -23,7 +23,7 @@
         <ul class="grid grid-cols-1 gap-2">
           @for (post of article.posts; track post.id) {
             <li class="md:flex item-start gap-10 mt-2">
-              <p class="text-dark-50">{{ post.date }}</p>
+              <p class="text-dark-50">{{ post.date | date: 'yyyy-MM-dd' }}</p>
               <div>
                 <h3>
                   <a [routerLink]="[`/${post.postUrl}`]" class="hover:text-primary-500">{{
