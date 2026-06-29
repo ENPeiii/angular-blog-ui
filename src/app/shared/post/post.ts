@@ -9,7 +9,7 @@ import {
   PLATFORM_ID,
   signal,
 } from '@angular/core';
-import { isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { isPlatformBrowser, DOCUMENT,DatePipe } from '@angular/common';
 import { MdViewer } from '../tui-editor/md-viewer/md-viewer';
 import { RouterLink } from '@angular/router';
 import { fromEvent, Subscription } from 'rxjs';
@@ -39,7 +39,7 @@ export interface Post {
 }
 @Component({
   selector: 'app-post',
-  imports: [MdViewer, RouterLink],
+  imports: [MdViewer, RouterLink, DatePipe],
   templateUrl: './post.html',
   styleUrl: './post.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

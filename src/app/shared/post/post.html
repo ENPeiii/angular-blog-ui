@@ -1,6 +1,6 @@
 <article>
   <h1>{{ title() }}</h1>
-  <p class="text-dark-50">{{ date() }}</p>
+  <p class="text-dark-50">{{ date() | date: 'yyyy-MM-dd' }}</p>
 
   <!-- 行動裝置目錄 (md 以下顯示) -->
   @if (toc().length > 0) {
