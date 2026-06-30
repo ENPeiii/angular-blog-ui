@@ -1,18 +1,19 @@
 <!-- banner -->
 <section class="grid grid-cols-12 gap-5 mt-5">
-  @if(banner()?.type==='imgText'){
-    <div class="col-span-12 md:col-span-9">
-      <md-viewer [content]="bannerContent()" />
-    </div>
-    <div class="col-span-12 md:col-span-3">
-      <img [src]="banner()?.imgUrl" [alt]="banner()?.imgAlt" class="mb-4 mx-auto" [class.logo]="banner()?.imgAlt === 'logo'" />
-    </div>
-  }@else {
-    <div class="col-span-12 mb-4">
-      <img [src]="banner()?.imgUrl" [alt]="banner()?.imgAlt" class="mx-auto" />
-    </div>
+  @if (banner(); as b) {
+    @if (b.type === 'imgText') {
+      <div class="col-span-12 md:col-span-9">
+        <md-viewer [content]="bannerContent()" />
+      </div>
+      <div class="col-span-12 md:col-span-3">
+        <img [src]="b.imgUrl" [alt]="b.imgAlt" class="mb-4 mx-auto" [class.logo]="b.imgAlt === 'logo'" />
+      </div>
+    } @else {
+      <div class="col-span-12 mb-4">
+        <img [src]="b.imgUrl" [alt]="b.imgAlt" class="mx-auto" />
+      </div>
+    }
   }
-  
 </section>
 <!-- 文章列表 -->
 <section>
@@ -37,7 +38,9 @@
         </div>
       </li>
     } @empty {
-      <li>目前沒有文章...</li>
+      @if (!articleResource.isLoading()) {
+        <li>目前沒有文章...</li>
+      }
     }
   </ul>
   <nav class="text-right mt-5">
