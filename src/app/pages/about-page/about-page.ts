@@ -29,11 +29,10 @@ export class AboutPage implements OnInit {
    */
   private loadAboutContent(): void {
     this.aboutService.getAboutContent().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (data) => {
-        this.mdViewerContent.set(data.content);
+      next: (about) => {
+        this.mdViewerContent.set(about.content);
       },
-      error: (error) => {
-        console.error('載入關於我內容失敗:', error);
+      error: () => {
         this.mdViewerContent.set('# 關於我\n加載內容失敗，請稍後重試。');
       },
     });

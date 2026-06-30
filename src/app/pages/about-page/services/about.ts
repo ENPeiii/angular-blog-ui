@@ -1,24 +1,24 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, shareReplay } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApiConfiguration } from '../../../api/api-configuration';
 
 interface AboutContent {
+  id: string;
   content: string;
+  updatedAt: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class About {
-  private apiUrl = 'api/about.json';
+  private http = inject(HttpClient);
+  private apiConfig = inject(ApiConfiguration);
 
-  constructor(private http: HttpClient) {}
-
-  /**
-   * 獲取關於我的內容
-   * @returns 返回包含 markdown 內容的 Observable
-   */
-  getAboutContent(): Observable<AboutContent> {
-    return this.http.get<AboutContent>(this.apiUrl).pipe(shareReplay(1));
+  getAboutContent() {
+    return this.http
+      .get<{ data: AboutContent }>(`${this.apiConfig.rootUrl}/public/about`)
+      .pipe(map(r => r.data));
   }
 }
