@@ -51,7 +51,14 @@ export class PostComponent implements OnDestroy {
   date = computed(() => this.post()?.date || '');
   content = computed(() => this.post()?.content || '');
   tags = computed(() => this.post()?.tags || []);
-  toc = computed(() => this.post()?.toc || []);
+  toc = computed(() => {
+    const fromData = this.post()?.toc;
+    if (fromData && fromData.length > 0) return fromData;
+    return (this.post()?.content ?? '')
+      .split('\n')
+      .filter((line) => /^## /.test(line))
+      .map((line) => line.replace(/^## +/, '').trim());
+  });
   changePag = computed(() => this.post()?.changePag || {});
   baseurl = computed(() => this.post()?.topicId ? `/topic/${this.post()?.topicId}` : `/blog`);
   tocOpen = signal(false);
