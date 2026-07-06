@@ -42,7 +42,8 @@ export class TopicContent implements OnInit {
   post = signal<Post | null>(null);
   sidebarLeft = signal(0);
   sidebarWidth = signal(0);
-  sidebarTop = signal(0);
+  // computed 使其在 headerHeight 由 ResizeObserver 非同步量測完成後自動跟著更新，避免 SSR 重整時卡在初始值 0
+  sidebarTop = computed(() => this.layoutConfig.headerHeight());
 
   private readonly titleService = inject(Title);
   private readonly layoutConfig = inject(LayoutConfig);
@@ -111,8 +112,6 @@ export class TopicContent implements OnInit {
       this.sidebarLeft.set(rect.left);
       this.sidebarWidth.set(rect.width);
     }
-    // 從 LayoutConfig 取得 header 高度，取代脆弱的 document.querySelector
-    this.sidebarTop.set(this.layoutConfig.headerHeight());
   }
 
   /**
