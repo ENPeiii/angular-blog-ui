@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, filter, map, of } from 'rxjs';
+import { Observable, filter, forkJoin, map, of } from 'rxjs';
 import { ApiConfiguration } from '../../../api/api-configuration';
 import { getPosts } from '../../../api/fn/public-posts/get-posts';
 import { getPost } from '../../../api/fn/public-posts/get-post';
+import { getTopics } from '../../../api/fn/public-topics/get-topics';
 import { Post } from '../../../shared/post/post';
 
 export interface PostsTab {
@@ -32,7 +33,7 @@ export interface PostsList {
     id: string;
     title: string;
     date: string;
-    topics: string | null;
+    topicName: string | null;
     postUrl: string;
   }[];
 }
@@ -65,20 +66,25 @@ export class Posts {
    * @memberof Posts
    */
   getPostsList$(tab: string, page: number): Observable<PostsRes> {
-    return getPosts(this.http, this.apiConfig.rootUrl, {
-      page,
-      pageSize: PAGE_SIZE,
-      categories: tab === 'all' ? undefined : tab,
+    return forkJoin({
+      posts: getPosts(this.http, this.apiConfig.rootUrl, {
+        page,
+        pageSize: PAGE_SIZE,
+        categories: tab === 'all' ? undefined : tab,
+      }).pipe(filter((r) => r.ok)),
+      topics: getTopics(this.http, this.apiConfig.rootUrl, { pageSize: 100 }).pipe(
+        filter((r) => r.ok),
+      ),
     }).pipe(
-      filter((r) => r.ok),
-      map((r) => {
-        const { data, totalPages } = r.body!;
+      map(({ posts, topics }) => {
+        const { data, totalPages } = posts.body!;
+        const topicMap = new Map(topics.body!.data.map((t) => [t.id, t.name]));
         return {
           page,
           totalPages,
           hasNext: page < totalPages,
           hasPrevious: page > 1,
-          articles: groupByMonth(data),
+          articles: groupByMonth(data, topicMap),
         };
       }),
     );
@@ -113,6 +119,7 @@ export class Posts {
 
 function groupByMonth(
   items: { id: string; title: string; createdAt: string; topicId: string | null }[],
+  topicMap: Map<string, string>,
 ): PostsList[] {
   const groups = new Map<string, PostsList>();
   for (const item of items) {
@@ -125,7 +132,7 @@ function groupByMonth(
       id: item.id,
       title: item.title,
       date: item.createdAt,
-      topics: item.topicId,
+      topicName: item.topicId ? (topicMap.get(item.topicId) ?? null) : null,
       postUrl: `blog/${item.id}`,
     });
   }
