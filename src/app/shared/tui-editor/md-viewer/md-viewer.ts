@@ -31,7 +31,9 @@ export class MdViewer implements OnDestroy {
 
   constructor() {
     let destroyed = false;
-    this.destroyRef.onDestroy(() => { destroyed = true; });
+    this.destroyRef.onDestroy(() => {
+      destroyed = true;
+    });
 
     afterNextRender(async () => {
       if (destroyed) return;
@@ -63,8 +65,13 @@ export class MdViewer implements OnDestroy {
         });
 
         // 縮小 highlight 範圍至 container，避免掃描整份 document
+        // 並將所有 a 標籤設為另開新頁
         queueMicrotask(() => {
           Prism.highlightAllUnder(container);
+          container.querySelectorAll('a').forEach((a: HTMLAnchorElement) => {
+            a.setAttribute('target', '_blank');
+            a.setAttribute('rel', 'noopener noreferrer');
+          });
         });
       });
     });
