@@ -133,7 +133,7 @@ function groupByMonth(
       title: item.title,
       date: item.createdAt,
       topicName: item.topicId ? (topicMap.get(item.topicId) ?? null) : null,
-      postUrl: `blog/${item.id}`,
+      postUrl: item.topicId ? `topics/${item.topicId}/${item.id}` : `blog/${item.id}`,
     });
   }
   return Array.from(groups.values());
